@@ -1,9 +1,9 @@
-//version: 1642394973
+//version: 1642464427
 /*
 DO NOT CHANGE THIS FILE!
 
 Also, you may replace this file at any time if there is an update available.
-Please check https://github.com/SinTh0r4s/ExampleMod1.7.10/blob/main/build.gradle for updates.
+Please check https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/build.gradle for updates.
  */
 
 
@@ -151,12 +151,16 @@ configurations.all {
 
 // Fix Jenkins' Git: chmod a file should not be detected as a change and append a '.dirty' to the version
 'git config core.fileMode false'.execute()
-// Pulls version from git tag
+
+// Pulls version first from the VERSION env and then git tag
+String identifiedVersion
 try {
-    version = minecraftVersion + "-" + gitVersion()
+    String versionOverride = System.getenv("VERSION") ?: null
+    identifiedVersion = versionOverride == null ? gitVersion() : versionOverride
+    version = minecraftVersion + "-" + identifiedVersion
 }
 catch (Exception e) {
-    throw new IllegalStateException("This mod must be version controlled by Git AND the repository must provide at least one tag!");
+    throw new IllegalStateException("This mod must be version controlled by Git AND the repository must provide at least one tag, or the VERSION override must be set!");
 }
 
 group = modGroup
@@ -498,22 +502,19 @@ publishing {
                 artifact source: apiJar, classifier: "api"
             }
 
-            groupId = System.getenv("ARTIFACT_GROUP_ID") ?: group
+            groupId = System.getenv("ARTIFACT_GROUP_ID") ?: "com.github.GTNewHorizons"
             artifactId = System.getenv("ARTIFACT_ID") ?: project.name
-            version = System.getenv("ARTIFACT_VERSION") ?: project.version
+            // Using the identified version, not project.version as it has the prepended 1.7.10
+            version = System.getenv("RELEASE_VERSION") ?: identifiedVersion
         }
     }
-    
+
     repositories {
         maven {
-            String owner = System.getenv("REPOSITORY_OWNER") ?: "Unknown"
-            String repositoryName = System.getenv("REPOSITORY_NAME") ?: "Unknown"
-            String githubRepositoryUrl = "https://maven.pkg.github.com/$owner/$repositoryName"
-            name = "GitHubPackages"
-            url = githubRepositoryUrl
+            url = "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases"
             credentials {
-                username = System.getenv("GITHUB_ACTOR") ?: "NONE"
-                password = System.getenv("GITHUB_TOKEN") ?: "NONE"
+                username = System.getenv("MAVEN_USER") ?: "NONE"
+                password = System.getenv("MAVEN_PASSWORD") ?: "NONE"
             }
         }
     }
@@ -537,7 +538,7 @@ if (isNewBuildScriptVersionAvailable(projectDir.toString())) {
 }
 
 static URL availableBuildScriptUrl() {
-    new URL("https://raw.githubusercontent.com/SinTh0r4s/ExampleMod1.7.10/main/build.gradle")
+    new URL("https://raw.githubusercontent.com/GTNewHorizons/ExampleMod1.7.10/main/build.gradle")
 }
 
 boolean performBuildScriptUpdate(String projectDir) {
@@ -579,7 +580,7 @@ configure(updateBuildScript) {
 
 def checkPropertyExists(String propertyName) {
     if (project.hasProperty(propertyName) == false) {
-        throw new GradleException("This project requires a property \"" + propertyName + "\"! Please add it your \"gradle.properties\". You can find all properties and their description here: https://github.com/SinTh0r4s/ExampleMod1.7.10/blob/main/gradle.properties")
+        throw new GradleException("This project requires a property \"" + propertyName + "\"! Please add it your \"gradle.properties\". You can find all properties and their description here: https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/gradle.properties")
     }
 }
 
