@@ -1,4 +1,4 @@
-//version: 1642484596
+//version: 1642784244
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -499,7 +499,10 @@ artifacts {
 publishing {
     publications {
         maven(MavenPublication) {
-            artifact source: usesShadowedDependencies.toBoolean() ? shadowJar : jar, classifier: ""
+            from components.java
+            if(usesShadowedDependencies.toBoolean()) {
+                artifact source: shadowJar, classifier: ""
+            }
             if(!noPublishedSources) {
                 artifact source: sourcesJar, classifier: "src"
             }
