@@ -1,4 +1,4 @@
-//version: 1642484596
+//version: 1642800000
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -43,6 +43,7 @@ plugins {
     id("org.ajoberstar.grgit") version("3.1.1")
     id("com.github.johnrengelman.shadow") version("4.0.4")
     id("com.palantir.git-version") version("0.12.3")
+    id('de.undercouch.download') version('4.1.2')
     id("maven-publish")
 }
 
@@ -580,6 +581,48 @@ static String getVersionHash(String buildScriptContent) {
 configure(updateBuildScript) {
     group = 'forgegradle'
     description = 'Updates the build script to the latest version'
+}
+
+// Deobfuscation
+
+def deobf(String sourceURL, String fileName) {
+    return deobf(sourceURL, fileName, false)
+}
+
+def deobf(String sourceURL, String fileName, boolean notch) {
+    def bon2File  = "$projectDir/data/BON2-2.5.0.jar"
+    def cacheFile = "$projectDir/deobfDependencies/" + fileName + ".jar"
+    def deobfFile = "$projectDir/deobfDependencies/" + fileName + "-deobf.jar"
+
+    if(file(deobfFile).exists()) {
+        return files(deobfFile)
+    }
+
+    download {
+        src 'https://github.com/glowredman/BON2/releases/download/2.5.0/BON2-2.5.0.CUSTOM-all.jar'
+        dest bon2File
+        quiet true
+        overwrite false
+    }
+
+    download {
+        src sourceURL
+        dest cacheFile
+        quiet true
+        overwrite false
+    }
+
+    if(notch) {
+        exec {
+            commandLine 'java', '-jar', bon2File, '--inputJar', cacheFile, '--outputJar', deobfFile, '--mcVer', '1.7.10', '--mappingsVer', 'stable_12'
+        }
+    } else {
+        exec {
+            commandLine 'java', '-jar', bon2File, '--inputJar', cacheFile, '--outputJar', deobfFile, '--mcVer', '1.7.10', '--mappingsVer', 'stable_12', '--notch'
+        }
+    }
+    delete(cacheFile)
+    return files(deobfFile)
 }
 
 // Helper methods
