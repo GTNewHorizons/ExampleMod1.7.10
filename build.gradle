@@ -1,4 +1,4 @@
-//version: 1642800000
+//version: 1642844806
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -595,7 +595,7 @@ def deobf(String sourceURL, String fileName) {
     }
 
     download {
-        src 'https://github.com/glowredman/BON2/releases/download/2.5.0/BON2-2.5.0.CUSTOM-all.jar'
+        src 'https://github.com/GTNewHorizons/BON2/releases/download/2.5.0/BON2-2.5.0.CUSTOM-all.jar'
         dest bon2File
         quiet true
         overwrite false
