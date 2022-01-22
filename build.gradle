@@ -1,4 +1,4 @@
-//version: 1642784244
+//version: 1642833682
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -515,6 +515,18 @@ publishing {
             artifactId = System.getenv("ARTIFACT_ID") ?: project.name
             // Using the identified version, not project.version as it has the prepended 1.7.10
             version = System.getenv("RELEASE_VERSION") ?: identifiedVersion
+            
+            // Remove all non GTNH deps here.
+            // Original intention was to remove an invalid forgeBin being generated without a groupId (mandatory), but
+            // it also removes all of the MC deps
+            pom.withXml {
+                Node pomNode = asNode()
+                pomNode.dependencies.'*'.findAll() {
+                    it.groupId.text() != 'com.github.GTNewHorizons'
+                }.each() {
+                    it.parent().remove(it)
+                }
+            }
         }
     }
 
