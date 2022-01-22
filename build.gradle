@@ -586,13 +586,9 @@ configure(updateBuildScript) {
 // Deobfuscation
 
 def deobf(String sourceURL, String fileName) {
-    return deobf(sourceURL, fileName, false)
-}
-
-def deobf(String sourceURL, String fileName, boolean notch) {
-    def bon2File  = "$projectDir/data/BON2-2.5.0.jar"
-    def cacheFile = "$projectDir/deobfDependencies/" + fileName + ".jar"
-    def deobfFile = "$projectDir/deobfDependencies/" + fileName + "-deobf.jar"
+    def bon2File  = "$projectDir/deobf/BON2-2.5.0.jar"
+    def cacheFile = "$projectDir/deobf/out/" + fileName + ".jar"
+    def deobfFile = "$projectDir/deobf/out/" + fileName + "-deobf.jar"
 
     if(file(deobfFile).exists()) {
         return files(deobfFile)
@@ -612,15 +608,12 @@ def deobf(String sourceURL, String fileName, boolean notch) {
         overwrite false
     }
 
-    if(notch) {
-        exec {
-            commandLine 'java', '-jar', bon2File, '--inputJar', cacheFile, '--outputJar', deobfFile, '--mcVer', '1.7.10', '--mappingsVer', 'stable_12'
-        }
-    } else {
-        exec {
-            commandLine 'java', '-jar', bon2File, '--inputJar', cacheFile, '--outputJar', deobfFile, '--mcVer', '1.7.10', '--mappingsVer', 'stable_12', '--notch'
-        }
+    exec {
+        commandLine 'java', '-jar', bon2File, '--inputJar', cacheFile, '--outputJar', deobfFile, '--mcVer', '1.7.10', '--mappingsVer', 'stable_12', '--notch'
+        workingDir "$projectDir/deobf"
+        standardOutput = new ByteArrayOutputStream()
     }
+
     delete(cacheFile)
     return files(deobfFile)
 }
