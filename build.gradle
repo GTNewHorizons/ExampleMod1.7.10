@@ -1,4 +1,4 @@
-//version: 1642872913
+//version: 1642964305
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -32,7 +32,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.5'
+        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.6'
     }
 }
 
@@ -193,6 +193,33 @@ minecraft {
             replace gradleTokenGroupName, modGroup
         }
     }
+
+    def arguments = []
+    def jvmArguments = []
+
+    if(usesMixins.toBoolean()) {
+        arguments += [
+                "--mods=../build/libs/$modId-${version}.jar",
+                "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
+        ]
+        jvmArguments += [
+                "-Dmixin.debug=true", "-Dmixin.debug.countInjections=true", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"
+        ]
+    }
+
+    clientRunConfig {
+        args(arguments)
+        jvmArgs(jvmArguments)
+
+        if(developmentEnvironmentUserName) {
+            args("--username", developmentEnvironmentUserName)
+        }
+    }
+
+    serverRunConfig {
+        args(arguments)
+        jvmArgs(jvmArguments)
+    }
 }
 
 if(file("addon.gradle").exists()) {
@@ -321,39 +348,6 @@ afterEvaluate {
             ]
         }
     }
-}
-
-runClient {
-    def arguments = []
-
-    if(usesMixins.toBoolean()) {
-        arguments += [
-                "--mods=../build/libs/$modId-${version}.jar",
-                "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
-        ]
-    }
-
-    if(developmentEnvironmentUserName) {
-        arguments += [
-                "--username",
-                developmentEnvironmentUserName
-        ]
-    }
-
-    args(arguments)
-}
-
-runServer {
-    def arguments = []
-
-    if (usesMixins.toBoolean()) {
-        arguments += [
-                "--mods=../build/libs/$modId-${version}.jar",
-                "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
-        ]
-    }
-
-    args(arguments)
 }
 
 tasks.withType(JavaExec).configureEach {
