@@ -193,33 +193,6 @@ minecraft {
             replace gradleTokenGroupName, modGroup
         }
     }
-
-    def arguments = []
-    def jvmArguments = []
-
-    if(usesMixins.toBoolean()) {
-        arguments += [
-                "--mods=../build/libs/$modId-${version}.jar",
-                "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
-        ]
-        jvmArguments += [
-                "-Dmixin.debug=true", "-Dmixin.debug.countInjections=true", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"
-        ]
-    }
-
-    clientRunConfig {
-        args(arguments)
-        jvmArgs(jvmArguments)
-
-        if(developmentEnvironmentUserName) {
-            args("--username", developmentEnvironmentUserName)
-        }
-    }
-
-    serverRunConfig {
-        args(arguments)
-        jvmArgs(jvmArguments)
-    }
 }
 
 if(file("addon.gradle").exists()) {
@@ -348,6 +321,30 @@ afterEvaluate {
             ]
         }
     }
+}
+def arguments = []
+def jvmArguments = []
+if(usesMixins.toBoolean()) {
+    arguments += [
+            "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
+    ]
+    jvmArguments += [
+            "-Dmixin.debug=true", "-Dmixin.debug.countInjections=true", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"
+    ]
+}
+
+runClient {
+    if(developmentEnvironmentUserName) {
+        arguments += [ "--username", developmentEnvironmentUserName ]
+    }
+
+    args(arguments)
+    jvmArgs(jvmArguments)
+}
+
+runServer {
+    args(arguments)
+    jvmArgs(jvmArguments)
 }
 
 tasks.withType(JavaExec).configureEach {
