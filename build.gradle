@@ -38,7 +38,6 @@ buildscript {
 
 plugins {
     id 'idea'
-    id 'eclipse'
     id 'scala'
     id("org.ajoberstar.grgit") version("3.1.1")
     id("com.github.johnrengelman.shadow") version("4.0.4")
