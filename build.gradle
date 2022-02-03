@@ -40,6 +40,7 @@ plugins {
     id 'idea'
     id 'eclipse'
     id 'scala'
+    id('org.jetbrains.kotlin.jvm') version ('1.6.10') apply false
     id('org.ajoberstar.grgit') version('4.1.1')
     id('com.github.johnrengelman.shadow') version('4.0.4')
     id('com.palantir.git-version') version('0.13.0') apply false
