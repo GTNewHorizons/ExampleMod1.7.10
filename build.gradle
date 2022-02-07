@@ -673,7 +673,7 @@ def deobf(String sourceURL) {
     }
 }
 
-// The method above is to be prefered. Use this method if the filename is not at the end of the URL.
+// The method above is to be preferred. Use this method if the filename is not at the end of the URL.
 def deobf(String sourceURL, String fileName) {
     String cacheDir = System.getProperty("user.home") + "/.gradle/caches/"
     String bon2Dir = cacheDir + "forge_gradle/deobf"
