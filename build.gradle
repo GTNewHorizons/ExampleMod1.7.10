@@ -56,7 +56,7 @@ if (project.file('.git/HEAD').isFile()) {
     apply plugin: 'com.palantir.git-version'
 }
 
-def out = services.get(StyledTextOutputFactory).create("an-ouput")
+def out = services.get(StyledTextOutputFactory).create("an-output")
 
 apply plugin: 'forge'
 
