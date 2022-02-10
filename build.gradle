@@ -196,8 +196,7 @@ version = minecraftVersion + '-' + identifiedVersion
 String modVersion = identifiedVersion
 
 if( identifiedVersion.equals(versionOverride) ) {
-    out.style(Style.FailureHeader).text('We hope you know what you\'re doing using ').style(Style.Identifier).println(modVersion)
-    out.style(Style.Failure).text('Going to blindly try to override version to ').style(Style.Identifier).text(modVersion).style(Style.Failure).println(', this may not work the way you expect!\7')
+    out.style(Style.Failure).text('Override version to ').style(Style.Identifier).text(modVersion).style(Style.Failure).println('!\7')
 }
 
 group = modGroup
