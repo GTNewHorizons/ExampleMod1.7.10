@@ -45,7 +45,7 @@ We also have described guidelines for existing mod [migration](docs/migration.md
 
 ### Files
  - [`build.gradle`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/build.gradle): This is the core script of the build process. You should not need to tamper with it, unless you are trying to accomplish something out of the ordinary. __Do not touch this file! You will make a future update near impossible if you do so!__
- - [`gradle.properties`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/gradle.properties): The core configuration file. It includes 
+ - [`gradle.properties`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/gradle.properties): The core configuration file. It includes
  - [`dependencies.gradle`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/dependencies.gradle): Add your mod's dependencies in this file. This is separate from the main build script, so you may replace the [`build.gradle`](https://github.com/SinTh0r4s/ExampleMod1.7.10/blob/main/build.gradle) if an update is available.
  - [`repositories.gradle`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/repositories.gradle): Add your dependencies' repositories. This is separate from the main build script, so you may replace the [`build.gradle`](https://github.com/SinTh0r4s/ExampleMod1.7.10/blob/main/build.gradle) if an update is available.
  - [`jitpack.yml`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/jitpack.yml): Ensures that your mod is available as import over [Jitpack](https://jitpack.io).
@@ -64,7 +64,7 @@ __Warning:__ Access Transformers are bugged and will deny you any sources for th
 Mixins are usually used to modify vanilla or mod/library in runtime without having to change source code. For example, redirect a call, change visibility or make class implement your interface. It's an advanced topic and most mods don't need to do that.
 
 You can activate Mixin in 'gradle.properties'. In that case a mixin configuration (usually named `mixins.mymodid.json`) will be generated automatically, and you only have to write the mixins itself. Dependencies are handled as well.
-Take a look at the examples in [`com.myname.mymodid.mixinplugin.*`](https://github.com/SinTh0r4s/ExampleMod1.7.10/tree/example-mixins/src/main/java/com/myname/mymodid/mixinplugin) and [`com.myname.mymodid.mixins.*`](https://github.com/SinTh0r4s/ExampleMod1.7.10/tree/example-mixins/src/main/java/com/myname/mymodid/mixins). 
+Take a look at the examples in [`com.myname.mymodid.mixinplugin.*`](https://github.com/SinTh0r4s/ExampleMod1.7.10/tree/example-mixins/src/main/java/com/myname/mymodid/mixinplugin) and [`com.myname.mymodid.mixins.*`](https://github.com/SinTh0r4s/ExampleMod1.7.10/tree/example-mixins/src/main/java/com/myname/mymodid/mixins).
 
 Check out the [`example-mixins`](https://github.com/SinTh0r4s/ExampleMod1.7.10/tree/example-mixins) brach for a working example!
 

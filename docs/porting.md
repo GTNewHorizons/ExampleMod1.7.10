@@ -38,7 +38,7 @@ After all these preparations nothing should be in the way of porting the mod, th
 
 Good approach is to start working with smaller things first, building up your confidence in how the mod works and gradually approaching more complex stuff, here is a general algorithm:
    1. Begin with fixing moved/renamed things by deleting all bad imports and with help of the IDE re-import equivalents if present.
-      Intelij IDEA has settings for unambiguous auto-import and import optimization on the fly, which can greatly speedup the process. Just pay attention to what is actually imported.  
+      Intelij IDEA has settings for unambiguous auto-import and import optimization on the fly, which can greatly speedup the process. Just pay attention to what is actually imported.
    2. Remove all nonworking code which is not easily fixable (e.g., class only introduced in newer forge) and provide stubs in its place.
        For example, replace reference to method of non existing class with your method in your class, it can have an empty body and mocked return so the code can compile and run without issues.
        Do not forget to track all things you've stubbed, if you are working on port alone - TODOs should be sufficient (most IDEs have a built in TODO browser).
