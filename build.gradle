@@ -1,4 +1,4 @@
-//version: 1644510936
+//version: 1644612407
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -45,11 +45,12 @@ plugins {
     id 'eclipse'
     id 'scala'
     id 'maven-publish'
-    id('org.jetbrains.kotlin.jvm') version ('1.6.10') apply false
-    id('org.ajoberstar.grgit') version('4.1.1')
-    id('com.github.johnrengelman.shadow') version('4.0.4')
-    id('com.palantir.git-version') version('0.13.0') apply false
-    id('de.undercouch.download') version('5.0.1')
+    id 'org.jetbrains.kotlin.jvm'        version '1.5.30' apply false
+    id 'org.jetbrains.kotlin.kapt'       version '1.5.30' apply false
+    id 'org.ajoberstar.grgit'            version '4.1.1'
+    id 'com.github.johnrengelman.shadow' version '4.0.4'
+    id 'com.palantir.git-version'        version '0.13.0' apply false
+    id 'de.undercouch.download'          version '5.0.1'
 }
 
 if (project.file('.git/HEAD').isFile()) {
@@ -207,7 +208,6 @@ else {
     archivesBaseName = modId
 }
 
-
 def arguments = []
 def jvmArguments = []
 
@@ -221,8 +221,8 @@ if(usesMixins.toBoolean()) {
 }
 
 minecraft {
-    version = minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion
-    runDir = "run"
+    version = minecraftVersion + '-' + forgeVersion + '-' + minecraftVersion
+    runDir = 'run'
 
     if (replaceGradleTokenInFile) {
         replaceIn replaceGradleTokenInFile
@@ -255,8 +255,8 @@ minecraft {
     }
 }
 
-if(file("addon.gradle").exists()) {
-    apply from: "addon.gradle"
+if(file('addon.gradle').exists()) {
+    apply from: 'addon.gradle'
 }
 
 apply from: 'repositories.gradle'
@@ -304,7 +304,7 @@ dependencies {
 
 apply from: 'dependencies.gradle'
 
-def mixingConfigRefMap = "mixins." + modId + ".refmap.json"
+def mixingConfigRefMap = 'mixins.' + modId + '.refmap.json'
 def refMap = "${tasks.compileJava.temporaryDir}" + File.separator + mixingConfigRefMap
 def mixinSrg = "${tasks.reobf.temporaryDir}" + File.separator + "mixins.srg"
 
@@ -408,8 +408,7 @@ tasks.withType(JavaExec).configureEach {
     )
 }
 
-processResources
-{
+processResources {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
@@ -572,7 +571,7 @@ publishing {
                                    'org.scala-lang.plugins', 'net.sf.jopt-simple', 'lzma', 'com.mojang', 'org.apache.commons', 'org.apache.httpcomponents',
                                    'commons-logging', 'java3d', 'net.sf.trove4j', 'com.ibm.icu', 'com.paulscode', 'io.netty', 'com.google.guava',
                                    'commons-io', 'commons-codec', 'net.java.jinput', 'net.java.jutils', 'com.google.code.gson', 'org.apache.logging.log4j',
-                                   'org.lwjgl.lwjgl', 'tv.twitch', '']
+                                   'org.lwjgl.lwjgl', 'tv.twitch', 'org.jetbrains.kotlin', '']
                 Node pomNode = asNode()
                 pomNode.dependencies.'*'.findAll() {
                     badPomGroup.contains(it.groupId.text())
