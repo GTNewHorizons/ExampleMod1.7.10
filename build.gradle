@@ -195,7 +195,9 @@ catch (Exception e) {
     identifiedVersion = versionOverride
 }
 version = minecraftVersion + '-' + identifiedVersion
-String modVersion = identifiedVersion
+ext {
+    modVersion = identifiedVersion
+}
 
 if( identifiedVersion.equals(versionOverride) ) {
     out.style(Style.Failure).text('Override version to ').style(Style.Identifier).text(modVersion).style(Style.Failure).println('!\7')
