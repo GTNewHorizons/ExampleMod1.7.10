@@ -6,7 +6,7 @@ Also, you may replace this file at any time if there is an update available.
 Please check https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/build.gradle for updates.
 */
 
-import org.gradle.internal.logging.text.StyledTextOutput 
+import org.gradle.internal.logging.text.StyledTextOutput
 import org.gradle.internal.logging.text.StyledTextOutputFactory
 import org.gradle.internal.logging.text.StyledTextOutput.Style
 
@@ -51,13 +51,14 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '4.0.4'
     id 'com.palantir.git-version'        version '0.13.0' apply false
     id 'de.undercouch.download'          version '5.0.1'
+    id 'com.github.gmazzo.buildconfig'   version '3.0.3' apply false
 }
 
 if (project.file('.git/HEAD').isFile()) {
     apply plugin: 'com.palantir.git-version'
 }
 
-def out = services.get(StyledTextOutputFactory).create("an-output")
+def out = services.get(StyledTextOutputFactory).create('an-output')
 
 apply plugin: 'forge'
 
@@ -539,7 +540,7 @@ artifacts {
     }
 }
 
-// The gradle metadata includes all of the additional deps that we disabled from POM generation (including forgeBin with no groupID), 
+// The gradle metadata includes all of the additional deps that we disabled from POM generation (including forgeBin with no groupID),
 // and isn't strictly needed with the POM so just disable it.
 tasks.withType(GenerateModuleMetadata) {
     enabled = false
