@@ -45,6 +45,7 @@ plugins {
     id 'eclipse'
     id 'scala'
     id 'maven-publish'
+    id 'forge'
     id 'org.jetbrains.kotlin.jvm'        version '1.5.30' apply false
     id 'org.jetbrains.kotlin.kapt'       version '1.5.30' apply false
     id 'org.ajoberstar.grgit'            version '4.1.1'
@@ -59,8 +60,6 @@ if (project.file('.git/HEAD').isFile()) {
 }
 
 def out = services.get(StyledTextOutputFactory).create('an-output')
-
-apply plugin: 'forge'
 
 def projectJavaVersion = JavaLanguageVersion.of(8)
 
@@ -175,7 +174,7 @@ configurations.all {
 try {
     'git config core.fileMode false'.execute()
 }
-catch (Exception e) {
+catch (Exception ignored) {
     out.style(Style.Failure).println("git isn't installed at all")
 }
 
@@ -185,7 +184,7 @@ String versionOverride = System.getenv("VERSION") ?: null
 try {
     identifiedVersion = versionOverride == null ? gitVersion() : versionOverride
 }
-catch (Exception e) {
+catch (Exception ignored) {
     out.style(Style.Failure).text(
         'This mod must be version controlled by Git AND the repository must provide at least one tag,\n' +
         'or the VERSION override must be set! ').style(Style.SuccessHeader).text('(Do NOT download from GitHub using the ZIP option, instead\n' +
@@ -199,7 +198,7 @@ ext {
     modVersion = identifiedVersion
 }
 
-if( identifiedVersion.equals(versionOverride) ) {
+if(identifiedVersion == versionOverride) {
     out.style(Style.Failure).text('Override version to ').style(Style.Identifier).text(modVersion).style(Style.Failure).println('!\7')
 }
 
@@ -439,7 +438,7 @@ processResources {
 
 def getManifestAttributes() {
     def manifestAttributes = [:]
-    if(containsMixinsAndOrCoreModOnly.toBoolean() == false && (usesMixins.toBoolean() || coreModClass)) {
+    if(!containsMixinsAndOrCoreModOnly.toBoolean() && (usesMixins.toBoolean() || coreModClass)) {
         manifestAttributes += ["FMLCorePluginContainsFMLMod": true]
     }
 
@@ -455,7 +454,7 @@ def getManifestAttributes() {
         manifestAttributes += [
                 "TweakClass" : "org.spongepowered.asm.launch.MixinTweaker",
                 "MixinConfigs" : "mixins." + modId + ".json",
-                "ForceLoadAsMod" : containsMixinsAndOrCoreModOnly.toBoolean() == false
+                "ForceLoadAsMod" : !containsMixinsAndOrCoreModOnly.toBoolean()
         ]
     }
     return manifestAttributes
@@ -721,7 +720,7 @@ def deobf(String sourceURL, String fileName) {
 // Helper methods
 
 def checkPropertyExists(String propertyName) {
-    if (project.hasProperty(propertyName) == false) {
+    if (!project.hasProperty(propertyName)) {
         throw new GradleException("This project requires a property \"" + propertyName + "\"! Please add it your \"gradle.properties\". You can find all properties and their description here: https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/gradle.properties")
     }
 }
