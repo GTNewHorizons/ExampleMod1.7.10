@@ -45,7 +45,6 @@ plugins {
     id 'eclipse'
     id 'scala'
     id 'maven-publish'
-    id 'forge'
     id 'org.jetbrains.kotlin.jvm'        version '1.5.30' apply false
     id 'org.jetbrains.kotlin.kapt'       version '1.5.30' apply false
     id 'org.ajoberstar.grgit'            version '4.1.1'
@@ -60,6 +59,8 @@ if (project.file('.git/HEAD').isFile()) {
 }
 
 def out = services.get(StyledTextOutputFactory).create('an-output')
+
+apply plugin: 'forge'
 
 def projectJavaVersion = JavaLanguageVersion.of(8)
 
