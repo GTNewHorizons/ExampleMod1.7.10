@@ -51,7 +51,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '4.0.4'
     id 'com.palantir.git-version'        version '0.13.0' apply false
     id 'de.undercouch.download'          version '5.0.1'
-    id 'com.github.gmazzo.buildconfig'   version '3.0.3' apply false
+    id 'com.github.gmazzo.buildconfig'   version '3.0.3'  apply false
 }
 
 if (project.file('.git/HEAD').isFile()) {
