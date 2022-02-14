@@ -55,7 +55,7 @@ We also have described guidelines for existing mod [migration](docs/migration.md
 
 You may activate Forge's Access Transformers by defining a configuration file in `gradle.properties`.
 
-Check out the [`example-access-transformers`](https://github.com/SinTh0r4s/ExampleMod1.7.10/tree/example-access-transformers) brach for a working example!
+Check out the [`example-access-transformers`](https://github.com/GTNewHorizons/ExampleMod1.7.10/tree/example-access-transformers) brach for a working example!
 
 __Warning:__ Access Transformers are bugged and will deny you any sources for the decompiled minecraft! Your development environment will still work, but you might face some inconveniences. For example, IntelliJ will not permit searches in dependencies without attached sources.
 
@@ -64,9 +64,9 @@ __Warning:__ Access Transformers are bugged and will deny you any sources for th
 Mixins are usually used to modify vanilla or mod/library in runtime without having to change source code. For example, redirect a call, change visibility or make class implement your interface. It's an advanced topic and most mods don't need to do that.
 
 You can activate Mixin in 'gradle.properties'. In that case a mixin configuration (usually named `mixins.mymodid.json`) will be generated automatically, and you only have to write the mixins itself. Dependencies are handled as well.
-Take a look at the examples in [`com.myname.mymodid.mixinplugin.*`](https://github.com/SinTh0r4s/ExampleMod1.7.10/tree/example-mixins/src/main/java/com/myname/mymodid/mixinplugin) and [`com.myname.mymodid.mixins.*`](https://github.com/SinTh0r4s/ExampleMod1.7.10/tree/example-mixins/src/main/java/com/myname/mymodid/mixins).
+Take a look at the examples in [`com.myname.mymodid.mixinplugin.*`](https://github.com/GTNewHorizons/ExampleMod1.7.10/tree/example-mixins/src/main/java/com/myname/mymodid/mixinplugin) and [`com.myname.mymodid.mixins.*`](https://github.com/GTNewHorizons/ExampleMod1.7.10/tree/example-mixins/src/main/java/com/myname/mymodid/mixins).
 
-Check out the [`example-mixins`](https://github.com/SinTh0r4s/ExampleMod1.7.10/tree/example-mixins) brach for a working example!
+Check out the [`example-mixins`](https://github.com/GTNewHorizons/ExampleMod1.7.10/tree/example-mixins) brach for a working example!
 
 ### Advanced
 
