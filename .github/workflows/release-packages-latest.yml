@@ -38,8 +38,8 @@ jobs:
                 -x "README.md" \
                 -x "LICENSE" \
                 \
-                -x "starter.zip" \
-                -x "migration.zip"
+                -x "packages/starter.zip" \
+                -x "packages/migration.zip"
 
       - name: Zip migration
         uses: montudor/action-zip@v1
@@ -59,8 +59,8 @@ jobs:
                 -x "LICENSE" \
                 -x "README.md" \
                 \
-                -x "starter.zip" \
-                -x "migration.zip"
+                -x "packages/starter.zip" \
+                -x "packages/migration.zip"
 
       - name: Update latest tag
         uses: "marvinpinto/action-automatic-releases@latest"
