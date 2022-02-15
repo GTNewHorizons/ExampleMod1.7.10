@@ -1,4 +1,4 @@
-//version: 1644612407
+//version: 1644894948
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -548,6 +548,9 @@ tasks.withType(GenerateModuleMetadata) {
     enabled = false
 }
 
+// workaround variable hiding in pom processing
+def projectConfigs = project.configurations
+
 publishing {
     publications {
         maven(MavenPublication) {
@@ -568,16 +571,20 @@ publishing {
             // Using the identified version, not project.version as it has the prepended 1.7.10
             version = System.getenv("RELEASE_VERSION") ?: identifiedVersion
 
-            // remove extra garbage from who knows where
+            // remove extra garbage from minecraft and minecraftDeps configuration
             pom.withXml {
-                def badPomGroup = ['net.minecraft', 'com.google.code.findbugs', 'org.ow2.asm', 'com.typesafe.akka', 'com.typesafe', 'org.scala-lang',
-                                   'org.scala-lang.plugins', 'net.sf.jopt-simple', 'lzma', 'com.mojang', 'org.apache.commons', 'org.apache.httpcomponents',
-                                   'commons-logging', 'java3d', 'net.sf.trove4j', 'com.ibm.icu', 'com.paulscode', 'io.netty', 'com.google.guava',
-                                   'commons-io', 'commons-codec', 'net.java.jinput', 'net.java.jutils', 'com.google.code.gson', 'org.apache.logging.log4j',
-                                   'org.lwjgl.lwjgl', 'tv.twitch', 'org.jetbrains.kotlin', '']
+                def badArtifacts = [:].withDefault {[] as Set<String>}
+                for (configuration in [projectConfigs.minecraft, projectConfigs.minecraftDeps]) {
+                    for (dependency in configuration.allDependencies) {
+                        badArtifacts[dependency.group == null ? "" : dependency.group] += dependency.name
+                    }
+                }
+                // example for specifying extra stuff to ignore
+                // badArtifacts["org.example.group"] += "artifactName"
+
                 Node pomNode = asNode()
                 pomNode.dependencies.'*'.findAll() {
-                    badPomGroup.contains(it.groupId.text())
+                    badArtifacts[it.groupId.text()].contains(it.artifactId.text())
                 }.each() {
                     it.parent().remove(it)
                 }
