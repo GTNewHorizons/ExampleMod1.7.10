@@ -214,13 +214,17 @@ else {
 def arguments = []
 def jvmArguments = []
 
-if(usesMixins.toBoolean()) {
+if (usesMixins.toBoolean()) {
     arguments += [
-            "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
+        "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
     ]
-    jvmArguments += [
-            "-Dmixin.debug.countInjections=true", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"
-    ]
+    if (usesMixinDebug.toBoolean()) {
+        jvmArguments += [
+            "-Dmixin.debug.countInjections=true",
+            "-Dmixin.debug.verbose=true",
+            "-Dmixin.debug.export=true"
+        ]
+    }
 }
 
 minecraft {
@@ -312,18 +316,23 @@ def refMap = "${tasks.compileJava.temporaryDir}" + File.separator + mixingConfig
 def mixinSrg = "${tasks.reobf.temporaryDir}" + File.separator + "mixins.srg"
 
 task generateAssets {
-    if(usesMixins.toBoolean()) {
-        getFile("/src/main/resources/mixins." + modId + ".json").text = """{
+    if (usesMixins.toBoolean()) {
+        def mixinConfigFile = getFile("/src/main/resources/mixins." + modId + ".json");
+        if (!mixinConfigFile.exists()) {
+            mixinConfigFile.text = """{
   "required": true,
   "minVersion": "0.7.11",
   "package": "${modGroup}.${mixinsPackage}",
   "plugin": "${modGroup}.${mixinPlugin}",
   "refmap": "${mixingConfigRefMap}",
   "target": "@env(DEFAULT)",
-  "compatibilityLevel": "JAVA_8"
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [],
+  "client": [],
+  "server": []
 }
-
 """
+        }
     }
 }
 
