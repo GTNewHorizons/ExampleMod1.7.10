@@ -470,7 +470,7 @@ def getManifestAttributes() {
 }
 
 task sourcesJar(type: Jar) {
-    from (sourceSets.main.allJava)
+    from (sourceSets.main.allSource)
     from (file("$projectDir/LICENSE"))
     getArchiveClassifier().set('sources')
 }
@@ -525,7 +525,7 @@ task devJar(type: Jar) {
 }
 
 task apiJar(type: Jar) {
-    from (sourceSets.main.allJava) {
+    from (sourceSets.main.allSource) {
         include modGroup.toString().replaceAll("\\.", "/") + "/" + apiPackage.toString().replaceAll("\\.", "/") + '/**'
     }
 
