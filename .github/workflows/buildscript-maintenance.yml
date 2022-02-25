@@ -21,4 +21,4 @@ jobs:
           git config user.email "<>"
 
       - name: Ensure build script version is up to date
-        run: .github/scripts/update-version.sh
+        run: .github/scripts/update_version
