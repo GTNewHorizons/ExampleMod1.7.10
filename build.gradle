@@ -1,4 +1,4 @@
-//version: 1644894948
+//version: 1646409286
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -95,6 +95,7 @@ checkPropertyExists("gradleTokenGroupName")
 checkPropertyExists("apiPackage")
 checkPropertyExists("accessTransformersFile")
 checkPropertyExists("usesMixins")
+def usesMixinDebug = project.findProperty('usesMixinDebug') ?: project.usesMixins.toBoolean()
 checkPropertyExists("mixinPlugin")
 checkPropertyExists("mixinsPackage")
 checkPropertyExists("coreModClass")
@@ -217,7 +218,7 @@ if (usesMixins.toBoolean()) {
     arguments += [
         "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
     ]
-    if (!project.hasProperty(usesMixinDebug) || usesMixinDebug.toBoolean()) {
+    if (usesMixinDebug.toBoolean()) {
         jvmArguments += [
             "-Dmixin.debug.countInjections=true",
             "-Dmixin.debug.verbose=true",
