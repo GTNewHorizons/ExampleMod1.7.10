@@ -95,7 +95,6 @@ checkPropertyExists("gradleTokenGroupName")
 checkPropertyExists("apiPackage")
 checkPropertyExists("accessTransformersFile")
 checkPropertyExists("usesMixins")
-def usesMixinDebug = project.findProperty('usesMixinDebug') ?: project.usesMixins.toBoolean()
 checkPropertyExists("mixinPlugin")
 checkPropertyExists("mixinsPackage")
 checkPropertyExists("coreModClass")
@@ -104,6 +103,7 @@ checkPropertyExists("usesShadowedDependencies")
 checkPropertyExists("developmentEnvironmentUserName")
 
 boolean noPublishedSources = project.findProperty("noPublishedSources") ? project.noPublishedSources.toBoolean() : false
+boolean usesMixinDebug = project.findProperty('usesMixinDebug') ?: project.usesMixins.toBoolean()
 
 String javaSourceDir = "src/main/java/"
 String scalaSourceDir = "src/main/scala/"
