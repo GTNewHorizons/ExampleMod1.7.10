@@ -568,7 +568,7 @@ publishing {
                 artifact source: shadowJar, classifier: ""
             }
             if(!noPublishedSources) {
-                artifact source: sourcesJar, classifier: "src"
+                artifact source: sourcesJar, classifier: "sources"
             }
             artifact source: usesShadowedDependencies.toBoolean() ? shadowDevJar : devJar, classifier: "dev"
             if (apiPackage) {
