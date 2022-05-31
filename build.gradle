@@ -1,4 +1,4 @@
-//version: 1652298000
+//version: 1654021238
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -12,7 +12,12 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.internal.logging.text.StyledTextOutput.Style
 import org.gradle.internal.logging.text.StyledTextOutputFactory
 
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
+import java.util.zip.ZipOutputStream
 
 buildscript {
     repositories {
@@ -670,11 +675,6 @@ configure(updateBuildScript) {
 
 // Parameter Deobfuscation
 
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.util.zip.ZipInputStream
-import java.util.zip.ZipEntry
-
 task deobfParams {
     doLast {
         checkPropertyExists("channel")
@@ -726,7 +726,7 @@ static int replaceParams(File file, Map<String, String> params) {
             content = content.replaceAll(key, value)
         }
         if(hash != content.hashCode()) {
-            Files.write(file.toPath(), content.getBytes())
+            Files.write(file.toPath(), content.getBytes("UTF-8"))
             return 1
         }
     } catch(Exception e) {
@@ -803,10 +803,12 @@ def deobf(String sourceURL) {
 }
 
 // The method above is to be preferred. Use this method if the filename is not at the end of the URL.
-def deobf(String sourceURL, String fileName) {
+def deobf(String sourceURL, String rawFileName) {
+    String bon2Version = "2.5.1"
+    String fileName = URLDecoder.decode(rawFileName, "UTF-8")
     String cacheDir = System.getProperty("user.home") + "/.gradle/caches/"
     String bon2Dir = cacheDir + "forge_gradle/deobf"
-    String bon2File  = bon2Dir + "/BON2-2.5.0.jar"
+    String bon2File  = bon2Dir + "/BON2-" + bon2Version + ".jar"
     String obfFile = cacheDir + "modules-2/files-2.1/" + fileName + ".jar"
     String deobfFile = cacheDir + "modules-2/files-2.1/" + fileName + "-deobf.jar"
 
@@ -814,8 +816,23 @@ def deobf(String sourceURL, String fileName) {
         return files(deobfFile)
     }
 
+    checkPropertyExists("channel")
+    checkPropertyExists("mappingsVersion")
+    checkPropertyExists("remoteMappings")
+    String mappingsVer
+    if(remoteMappings) {
+        String id = forgeVersion.split("\\.")[3] + '-' + minecraftVersion
+        String mappingsZIP = cacheDir + "/forge_gradle/maven_downloader/de/oceanlabs/mcp/mcp_snapshot_nodoc/" + id + "/mcp_snapshot_nodoc-" + id + ".zip"
+
+        zipMappings(mappingsZIP, remoteMappings, bon2Dir)
+        
+        mappingsVer = 'snapshot_' + id
+    } else {
+        mappingsVer = channel + '_' + mappingsVersion
+    }
+
     download.run {
-        src 'https://github.com/GTNewHorizons/BON2/releases/download/2.5.0/BON2-2.5.0.CUSTOM-all.jar'
+        src 'http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/com/github/parker8283/BON2/' + bon2Version + '-CUSTOM/BON2-' + bon2Version + '-CUSTOM-all.jar'
         dest bon2File
         quiet true
         overwrite false
@@ -829,12 +846,46 @@ def deobf(String sourceURL, String fileName) {
     }
 
     exec {
-        commandLine 'java', '-jar', bon2File, '--inputJar', obfFile, '--outputJar', deobfFile, '--mcVer', minecraftVersion, '--mappingsVer', channel + '_' + mappingsVersion, '--notch'
+        commandLine 'java', '-jar', bon2File, '--inputJar', obfFile, '--outputJar', deobfFile, '--mcVer', minecraftVersion, '--mappingsVer', mappingsVer, '--notch'
         workingDir bon2Dir
-        standardOutput = new ByteArrayOutputStream()
+        standardOutput = new FileOutputStream(deobfFile + ".log")
     }
 
     return files(deobfFile)
+}
+
+def zipMappings(String zipPath, String url, String bon2Dir) {
+    File zipFile = new File(zipPath)
+    if(zipFile.exists()) {
+        return
+    }
+
+    String fieldsCache = bon2Dir + "/data/fields.csv"
+    String methodsCache = bon2Dir + "/data/methods.csv"
+
+    download.run {
+        src url + "fields.csv"
+        dest fieldsCache
+        quiet true
+    }
+    download.run {
+        src url + "methods.csv"
+        dest methodsCache
+        quiet true
+    }
+
+    zipFile.getParentFile().mkdirs()
+    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))
+
+    zos.putNextEntry(new ZipEntry("fields.csv"))
+    Files.copy(Paths.get(fieldsCache), zos)
+    zos.closeEntry()
+
+    zos.putNextEntry(new ZipEntry("methods.csv"))
+    Files.copy(Paths.get(methodsCache), zos)
+    zos.closeEntry()
+
+    zos.close()
 }
 
 // Helper methods
