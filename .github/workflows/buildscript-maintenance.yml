@@ -5,20 +5,51 @@ name: Buildscript maintenance
 on:
   push:
     branches: [ master, main ]
+    paths:
+      - build.gradle
+  workflow_dispatch: { }
 
 jobs:
   buildscript-maintenance:
     runs-on: ubuntu-latest
+    # Avoid running this workflow on forks
+    if: github.repository == 'GTNewHorizons/ExampleMod1.7.10'
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 2
-
-      - name: setup git config
-        run: |
-          git config user.name "GitHub CI Bot"
-          git config user.email "<>"
+        uses: actions/checkout@v3
 
       - name: Ensure build script version is up to date
-        run: .github/scripts/update_version
+        id: update-buildscript
+        run: |
+          new_version="$(date +%s)"
+          sed --in-place "1s!^//version:.*!//version: $new_version!g" build.gradle
+          echo "::set-output name=new_version::$new_version"
+
+      - name: Create Pull Request
+        id: create-pull-request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          add-paths: build.gradle
+          commit-message: '[ci skip] update build script version to ${{ steps.update-buildscript.outputs.new_version }}'
+          branch: buildscript-maintenance
+          title: Update build script version to ${{ steps.update-buildscript.outputs.new_version }}
+          body: This pull request is created by the buildscript-maintenance workflow
+
+      - name: Enable Pull Request Auto Merge
+        if: steps.create-pull-request.outputs.pull-request-operation == 'created'
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
+          merge-method: squash
+
+      - name: Auto approve
+        if: steps.create-pull-request.outputs.pull-request-operation == 'created'
+        uses: juliangruber/approve-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ steps.create-pull-request.outputs.pull-request-number }}
+
