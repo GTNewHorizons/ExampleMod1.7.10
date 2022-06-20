@@ -1,4 +1,4 @@
-//version: 1654021238
+//version: 1655755555
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -110,6 +110,9 @@ checkPropertyExists("developmentEnvironmentUserName")
 
 boolean noPublishedSources = project.findProperty("noPublishedSources") ? project.noPublishedSources.toBoolean() : false
 boolean usesMixinDebug = project.findProperty('usesMixinDebug') ?: project.usesMixins.toBoolean()
+String channel = project.findProperty('channel') ? project.channel : 'stable'
+String mappingsVersion = project.findProperty('mappingsVersion') ? project.mappingsVersion : '12'
+String remoteMappings = project.findProperty('remoteMappings') ? project.remoteMappings : 'https://raw.githubusercontent.com/MinecraftForge/FML/1.7.10/conf/'
 
 String javaSourceDir = "src/main/java/"
 String scalaSourceDir = "src/main/scala/"
@@ -678,15 +681,13 @@ configure(updateBuildScript) {
 
 task deobfParams {
     doLast {
-        checkPropertyExists("channel")
-        checkPropertyExists("mappingsVersion")
 
-        String mcpDir = System.getProperty("user.home") + "/.gradle/caches/minecraft/de/oceanlabs/mcp/mcp_" + channel + "/" + mappingsVersion
-        String mcpZIP = mcpDir  + "/mcp_" + channel + "-" + mappingsVersion + "-" + minecraftVersion + ".zip"
-        String paramsCSV = mcpDir  + "/params.csv"
+        String mcpDir = "$project.gradle.gradleUserHomeDir/caches/minecraft/de/oceanlabs/mcp/mcp_$channel/$mappingsVersion"
+        String mcpZIP = "$mcpDir/mcp_$channel-$mappingsVersion-${minecraftVersion}.zip"
+        String paramsCSV = "$mcpDir/params.csv"
 
         download.run {
-            src 'https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp_' + channel + '/' + mappingsVersion + '-' + minecraftVersion + '/mcp_' + channel + '-' + mappingsVersion + '-' + minecraftVersion + '.zip'
+            src "https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp_$channel/$mappingsVersion-$minecraftVersion/mcp_$channel-$mappingsVersion-${minecraftVersion}.zip"
             dest mcpZIP
             overwrite false
         }
@@ -705,7 +706,7 @@ task deobfParams {
             }
         }
 
-        out.style(Style.Success).println("Modified " + replaceParams(file("$projectDir/src/main/java"), params) + " files!")
+        out.style(Style.Success).println("Modified ${replaceParams(file("$projectDir/src/main/java"), params)} files!")
         out.style(Style.Failure).println("Don't forget to verify that the code still works as before!\n It could be broken due to duplicate variables existing now\n or parameters taking priority over other variables.")
     }
 }
@@ -719,7 +720,7 @@ static int replaceParams(File file, Map<String, String> params) {
         }
         return fileCount
     }
-    println("Visiting " + file.getName() + " ...")
+    println("Visiting ${file.getName()} ...")
     try {
         String content = new String(Files.readAllBytes(file.toPath()))
         int hash = content.hashCode()
@@ -738,20 +739,20 @@ static int replaceParams(File file, Map<String, String> params) {
 
 // Credit: bitsnaps (https://gist.github.com/bitsnaps/00947f2dce66f4bbdabc67d7e7b33681)
 static unzip(String zipFileName, String outputDir) {
-    byte[] buffer = new byte[1024]
+    byte[] buffer = new byte[16384]
     ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFileName))
     ZipEntry zipEntry = zis.getNextEntry()
     while (zipEntry != null) {
          File newFile = new File(outputDir + File.separator, zipEntry.name)
          if (zipEntry.isDirectory()) {
              if (!newFile.isDirectory() && !newFile.mkdirs()) {
-                 throw new IOException("Failed to create directory " + newFile)
+                 throw new IOException("Failed to create directory $newFile")
              }
          } else {
              // fix for Windows-created archives
              File parent = newFile.parentFile
              if (!parent.isDirectory() && !parent.mkdirs()) {
-                 throw new IOException("Failed to create directory " + parent)
+                 throw new IOException("Failed to create directory $parent")
              }
              // write file content
              FileOutputStream fos = new FileOutputStream(newFile)
@@ -797,9 +798,9 @@ def deobf(String sourceURL) {
         Collections.reverse(parts)
         hostName = String.join(".", parts)
 
-        return deobf(sourceURL, hostName + "/" + fileName)
+        return deobf(sourceURL, "$hostName/$fileName")
     } catch(Exception e) {
-        return deobf(sourceURL, "deobf/" + String.valueOf(sourceURL.hashCode()))
+        return deobf(sourceURL, "deobf/${sourceURL.hashCode()}")
     }
 }
 
@@ -807,33 +808,30 @@ def deobf(String sourceURL) {
 def deobf(String sourceURL, String rawFileName) {
     String bon2Version = "2.5.1"
     String fileName = URLDecoder.decode(rawFileName, "UTF-8")
-    String cacheDir = System.getProperty("user.home") + "/.gradle/caches/"
-    String bon2Dir = cacheDir + "forge_gradle/deobf"
-    String bon2File  = bon2Dir + "/BON2-" + bon2Version + ".jar"
-    String obfFile = cacheDir + "modules-2/files-2.1/" + fileName + ".jar"
-    String deobfFile = cacheDir + "modules-2/files-2.1/" + fileName + "-deobf.jar"
+    String cacheDir = "$project.gradle.gradleUserHomeDir/caches"
+    String bon2Dir = "$cacheDir/forge_gradle/deobf"
+    String bon2File = "$bon2Dir/BON2-${bon2Version}.jar"
+    String obfFile = "$cacheDir/modules-2/files-2.1/${fileName}.jar"
+    String deobfFile = "$cacheDir/modules-2/files-2.1/${fileName}-deobf.jar"
 
     if(file(deobfFile).exists()) {
         return files(deobfFile)
     }
 
-    checkPropertyExists("channel")
-    checkPropertyExists("mappingsVersion")
-    checkPropertyExists("remoteMappings")
     String mappingsVer
     if(remoteMappings) {
-        String id = forgeVersion.split("\\.")[3] + '-' + minecraftVersion
-        String mappingsZIP = cacheDir + "/forge_gradle/maven_downloader/de/oceanlabs/mcp/mcp_snapshot_nodoc/" + id + "/mcp_snapshot_nodoc-" + id + ".zip"
+        String id = "${forgeVersion.split("\\.")[3]}-$minecraftVersion"
+        String mappingsZIP = "$cacheDir/forge_gradle/maven_downloader/de/oceanlabs/mcp/mcp_snapshot_nodoc/$id/mcp_snapshot_nodoc-${id}.zip"
 
         zipMappings(mappingsZIP, remoteMappings, bon2Dir)
         
-        mappingsVer = 'snapshot_' + id
+        mappingsVer = "snapshot_$id"
     } else {
-        mappingsVer = channel + '_' + mappingsVersion
+        mappingsVer = "${channel}_$mappingsVersion"
     }
 
     download.run {
-        src 'http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/com/github/parker8283/BON2/' + bon2Version + '-CUSTOM/BON2-' + bon2Version + '-CUSTOM-all.jar'
+        src "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/com/github/parker8283/BON2/$bon2Version-CUSTOM/BON2-$bon2Version-CUSTOM-all.jar"
         dest bon2File
         quiet true
         overwrite false
@@ -849,7 +847,7 @@ def deobf(String sourceURL, String rawFileName) {
     exec {
         commandLine 'java', '-jar', bon2File, '--inputJar', obfFile, '--outputJar', deobfFile, '--mcVer', minecraftVersion, '--mappingsVer', mappingsVer, '--notch'
         workingDir bon2Dir
-        standardOutput = new FileOutputStream(deobfFile + ".log")
+        standardOutput = new FileOutputStream("${deobfFile}.log")
     }
 
     return files(deobfFile)
@@ -861,16 +859,16 @@ def zipMappings(String zipPath, String url, String bon2Dir) {
         return
     }
 
-    String fieldsCache = bon2Dir + "/data/fields.csv"
-    String methodsCache = bon2Dir + "/data/methods.csv"
+    String fieldsCache = "$bon2Dir/data/fields.csv"
+    String methodsCache = "$bon2Dir/data/methods.csv"
 
     download.run {
-        src url + "fields.csv"
+        src "${url}fields.csv"
         dest fieldsCache
         quiet true
     }
     download.run {
-        src url + "methods.csv"
+        src "${url}methods.csv"
         dest methodsCache
         quiet true
     }
