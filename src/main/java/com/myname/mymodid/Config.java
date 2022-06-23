@@ -1,9 +1,8 @@
 package com.myname.mymodid;
 
+import java.io.File;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-
-import java.io.File;
 
 public class Config {
 
@@ -21,10 +20,11 @@ public class Config {
         Configuration configuration = new Configuration(configFile);
         configuration.load();
 
-        Property greetingProperty = configuration.get(Categories.general, "greeting", Defaults.greeting, "How shall I greet?");
+        Property greetingProperty =
+                configuration.get(Categories.general, "greeting", Defaults.greeting, "How shall I greet?");
         greeting = greetingProperty.getString();
 
-        if(configuration.hasChanged()) {
+        if (configuration.hasChanged()) {
             configuration.save();
         }
     }
