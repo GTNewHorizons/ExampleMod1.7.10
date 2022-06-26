@@ -1,4 +1,4 @@
-//version: 1656760175
+//version: 1656760732
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -142,6 +142,7 @@ checkPropertyExists("developmentEnvironmentUserName")
 
 boolean noPublishedSources = project.findProperty("noPublishedSources") ? project.noPublishedSources.toBoolean() : false
 boolean usesMixinDebug = project.findProperty('usesMixinDebug') ?: project.usesMixins.toBoolean()
+boolean forceEnableMixins = project.findProperty('forceEnableMixins') ? project.forceEnableMixins.toBoolean() : false
 String channel = project.findProperty('channel') ? project.channel : 'stable'
 String mappingsVersion = project.findProperty('mappingsVersion') ? project.mappingsVersion : '12'
 String remoteMappings = project.findProperty('remoteMappings') ? project.remoteMappings : 'https://raw.githubusercontent.com/MinecraftForge/FML/1.7.10/conf/'
@@ -255,7 +256,7 @@ else {
 def arguments = []
 def jvmArguments = []
 
-if (usesMixins.toBoolean()) {
+if (usesMixins.toBoolean() || forceEnableMixins) {
     arguments += [
         "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
     ]
@@ -320,7 +321,7 @@ repositories {
         name 'Overmind forge repo mirror'
         url 'https://gregtech.overminddl1.com/'
     }
-    if(usesMixins.toBoolean()) {
+    if(usesMixins.toBoolean() || forceEnableMixins) {
         maven {
             name 'sponge'
             url 'https://repo.spongepowered.org/repository/maven-public'
@@ -337,6 +338,8 @@ dependencies {
         annotationProcessor('com.google.guava:guava:24.1.1-jre')
         annotationProcessor('com.google.code.gson:gson:2.8.6')
         annotationProcessor('org.spongepowered:mixin:0.8-SNAPSHOT')
+    }
+    if(usesMixins.toBoolean() || forceEnableMixins) {
         // using 0.8 to workaround a issue in 0.7 which fails mixin application
         compile('com.github.GTNewHorizons:SpongePoweredMixin:0.7.12-GTNH') {
             // Mixin includes a lot of dependencies that are too up-to-date
