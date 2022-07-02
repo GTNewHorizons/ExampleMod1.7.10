@@ -91,7 +91,7 @@ spotless {
     encoding 'UTF-8'
 
     format 'misc', {
-        target '*.md', '.gitignore'
+        target '.gitignore'
 
         trimTrailingWhitespace()
         indentWithSpaces(4)
