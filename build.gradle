@@ -466,9 +466,10 @@ processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
+    // replace stuff in mcmod.info and litemod.json, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
+        include 'litemod.json'
 
         // replace modVersion and minecraftVersion
         expand "minecraftVersion": project.minecraft.version,
@@ -481,9 +482,10 @@ processResources {
         from refMap
     }
 
-    // copy everything else that's not the mcmod.info
+    // copy everything else that's not the mcmod.info or litemod.json
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+        exclude 'litemod.json'
     }
 }
 
