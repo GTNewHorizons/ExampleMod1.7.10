@@ -1,11 +1,12 @@
-# This workflow only meant for the source mod you shouldn't bring it into your own project
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Release starter and migration packages
+name: Release latest starter and migration packages
 
 on:
   push:
-    tags:
-      - '*'
+    branches: [ master, main ]
+    tags: [ '*' ]
 
 jobs:
   zip-and-release-packages:
@@ -31,8 +32,7 @@ jobs:
                 \
                 -x ".github/scripts/update-version.sh" \
                 -x ".github/workflows/buildscript-maintenance.yml" \
-                -x ".github/workflows/release-packages-latest.yml" \
-                -x ".github/workflows/toolchain-compatibility.yml" \
+                -x ".github/workflows/release-packages.yml" \
                 \
                 -x "*docs/*" \
                 -x "README.md" \
@@ -51,9 +51,7 @@ jobs:
                 \
                 -x ".github/scripts/update-version.sh" \
                 -x ".github/workflows/buildscript-maintenance.yml" \
-                -x ".github/workflows/release-packages-latest.yml" \
-                -x ".github/workflows/release-packages-tags.yml" \
-                -x ".github/workflows/toolchain-compatibility.yml" \
+                -x ".github/workflows/release-packages.yml" \
                 \
                 -x "*docs/*" \
                 -x "*src/*" \
@@ -63,7 +61,18 @@ jobs:
                 -x "packages/starter.zip" \
                 -x "packages/migration.zip"
 
-      - name: Release under current tag
+      - name: Update latest tag
+        uses: "marvinpinto/action-automatic-releases@latest"
+        if: ${{ (github.ref == 'master' || github.ref == 'main') }}
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest-packages"
+          prerelease: true
+          title: "Latest starter and migration packages"
+          files: packages/*
+
+      - name: Release named version
+        if: ${{ !(github.ref == 'master' || github.ref == 'main') }}
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
