@@ -113,7 +113,7 @@ spotless {
     }
     groovyGradle {
         toggleOffOn()
-        importOrder()
+        // importOrder() disabled until someone can fix this
         target '*.gradle'
         greclipse('4.19.0') // last version supporting jvm 8
 
