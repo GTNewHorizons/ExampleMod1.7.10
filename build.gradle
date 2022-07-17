@@ -20,6 +20,8 @@ import java.util.zip.ZipOutputStream
 
 buildscript {
     repositories {
+        mavenCentral()
+
         maven {
             name 'forge'
             url 'https://maven.minecraftforge.net'
@@ -59,6 +61,12 @@ plugins {
     id "com.diffplug.spotless"           version "6.7.2"
 }
 
+dependencies {
+    implementation 'com.diffplug:blowdryer:1.6.0'
+}
+
+apply plugin: 'com.diffplug.blowdryer'
+
 if (project.file('.git/HEAD').isFile()) {
     apply plugin: 'com.palantir.git-version'
 }
@@ -82,45 +90,7 @@ idea {
         downloadSources = true
     }
 }
-
-// Spotless autoformatter
-// See https://github.com/diffplug/spotless/tree/main/plugin-gradle
-// Can be locally toggled via spotless:off/spotless:on comments
-spotless {
-    encoding 'UTF-8'
-
-    format 'misc', {
-        target '.gitignore'
-
-        trimTrailingWhitespace()
-        indentWithSpaces(4)
-        endWithNewline()
-    }
-    java {
-        toggleOffOn()
-        importOrder()
-        removeUnusedImports()
-        palantirJavaFormat('1.1.0') // last version supporting jvm 8
-    }
-    kotlin {
-        toggleOffOn()
-        ktfmt('0.39')
-
-        trimTrailingWhitespace()
-        indentWithSpaces(4)
-        endWithNewline()
-    }
-    groovyGradle {
-        toggleOffOn()
-        // importOrder() disabled until someone can fix this
-        target '*.gradle'
-        greclipse('4.19.0') // last version supporting jvm 8
-
-        trimTrailingWhitespace()
-        indentWithSpaces(4)
-        endWithNewline()
-    }
-}
+apply from: Blowdryer.file('spotless.gradle')
 
 if(JavaVersion.current() != JavaVersion.VERSION_1_8) {
     throw new GradleException("This project requires Java 8, but it's running on " + JavaVersion.current())
@@ -478,6 +448,7 @@ processResources {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
+    exclude("spotless.gradle")
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
@@ -497,6 +468,7 @@ processResources {
     // copy everything else that's not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+        exclude 'spotless.gradle'
     }
 }
 

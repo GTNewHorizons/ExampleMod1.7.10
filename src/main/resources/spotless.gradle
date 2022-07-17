@@ -1,0 +1,40 @@
+printf("Configuring spotless\n")
+
+// Spotless autoformatter
+// See https://github.com/diffplug/spotless/tree/main/plugin-gradle
+// Can be locally toggled via spotless:off/spotless:on comments
+spotless {
+    encoding 'UTF-8'
+
+    format 'misc', {
+        target '.gitignore'
+
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
+    }
+    java {
+        toggleOffOn()
+        importOrder()
+        removeUnusedImports()
+        palantirJavaFormat('1.1.0') // last version supporting jvm 8
+    }
+    kotlin {
+        toggleOffOn()
+        ktfmt('0.39')
+
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
+    }
+    groovyGradle {
+        toggleOffOn()
+        // importOrder() disabled until someone can fix this
+        target '*.gradle'
+        greclipse('4.19.0') // last version supporting jvm 8
+
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
+    }
+}
