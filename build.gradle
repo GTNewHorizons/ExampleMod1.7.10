@@ -117,13 +117,12 @@ checkPropertyExists("containsMixinsAndOrCoreModOnly")
 checkPropertyExists("usesShadowedDependencies")
 checkPropertyExists("developmentEnvironmentUserName")
 
-boolean noPublishedSources = project.findProperty("noPublishedSources") ? project.noPublishedSources.toBoolean() : false
-boolean usesMixinDebug = project.findProperty('usesMixinDebug') ?: project.usesMixins.toBoolean()
-boolean forceEnableMixins = project.findProperty('forceEnableMixins') ? project.forceEnableMixins.toBoolean() : false
-String channel = project.findProperty('channel') ? project.channel : 'stable'
-String mappingsVersion = project.findProperty('mappingsVersion') ? project.mappingsVersion : '12'
-String remoteMappings = project.findProperty('remoteMappings') ? project.remoteMappings : 'https://raw.githubusercontent.com/MinecraftForge/FML/1.7.10/conf/'
-
+boolean noPublishedSources = project.hasProperty("noPublishedSources") ? project.noPublishedSources.toBoolean() : false
+boolean usesMixinDebug = project.hasProperty('usesMixinDebug') ?: project.usesMixins.toBoolean()
+boolean forceEnableMixins = project.hasProperty('forceEnableMixins') ? project.forceEnableMixins.toBoolean() : false
+String channel = project.hasProperty('channel') ? project.channel : 'stable'
+String mappingsVersion = project.hasProperty('mappingsVersion') ? project.mappingsVersion : '12'
+String remoteMappings = project.hasProperty('remoteMappings') ? project.remoteMappings : 'https://raw.githubusercontent.com/MinecraftForge/FML/1.7.10/conf/'
 String javaSourceDir = "src/main/java/"
 String scalaSourceDir = "src/main/scala/"
 String kotlinSourceDir = "src/main/kotlin/"
