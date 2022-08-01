@@ -1,4 +1,4 @@
-//version: 1658080040
+//version: 1658517280
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -43,7 +43,6 @@ buildscript {
         classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.7'
     }
 }
-
 plugins {
     id 'java-library'
     id 'idea'
@@ -60,6 +59,7 @@ plugins {
     id 'com.github.gmazzo.buildconfig'   version '3.0.3'        apply false
     id "com.diffplug.spotless"           version "6.7.2"
 }
+verifySettingsGradle()
 
 dependencies {
     implementation 'com.diffplug:blowdryer:1.6.0'
@@ -113,13 +113,12 @@ checkPropertyExists("containsMixinsAndOrCoreModOnly")
 checkPropertyExists("usesShadowedDependencies")
 checkPropertyExists("developmentEnvironmentUserName")
 
-boolean noPublishedSources = project.findProperty("noPublishedSources") ? project.noPublishedSources.toBoolean() : false
-boolean usesMixinDebug = project.findProperty('usesMixinDebug') ?: project.usesMixins.toBoolean()
-boolean forceEnableMixins = project.findProperty('forceEnableMixins') ? project.forceEnableMixins.toBoolean() : false
-String channel = project.findProperty('channel') ? project.channel : 'stable'
-String mappingsVersion = project.findProperty('mappingsVersion') ? project.mappingsVersion : '12'
-String remoteMappings = project.findProperty('remoteMappings') ? project.remoteMappings : 'https://raw.githubusercontent.com/MinecraftForge/FML/1.7.10/conf/'
-
+boolean noPublishedSources = project.hasProperty("noPublishedSources") ? project.noPublishedSources.toBoolean() : false
+boolean usesMixinDebug = project.hasProperty('usesMixinDebug') ?: project.usesMixins.toBoolean()
+boolean forceEnableMixins = project.hasProperty('forceEnableMixins') ? project.forceEnableMixins.toBoolean() : false
+String channel = project.hasProperty('channel') ? project.channel : 'stable'
+String mappingsVersion = project.hasProperty('mappingsVersion') ? project.mappingsVersion : '12'
+String remoteMappings = project.hasProperty('remoteMappings') ? project.remoteMappings : 'https://raw.githubusercontent.com/MinecraftForge/FML/1.7.10/conf/'
 String javaSourceDir = "src/main/java/"
 String scalaSourceDir = "src/main/scala/"
 String kotlinSourceDir = "src/main/kotlin/"
@@ -660,12 +659,26 @@ if (isNewBuildScriptVersionAvailable(projectDir.toString())) {
 static URL availableBuildScriptUrl() {
     new URL("https://raw.githubusercontent.com/GTNewHorizons/ExampleMod1.7.10/main/build.gradle")
 }
+static URL exampleSettingsGradleUrl() {
+    new URL("https://raw.githubusercontent.com/GTNewHorizons/ExampleMod1.7.10/main/settings.gradle.example")
+}
+
+
+def verifySettingsGradle() {
+    def settingsFile = getFile("settings.gradle")
+    if (!settingsFile.exists()) {
+        println("Downloading default settings.gradle")
+        exampleSettingsGradleUrl().withInputStream { i -> settingsFile.withOutputStream { it << i } }
+        throw new GradleException("Settings.gradle has been updated, please re-run task.")
+    }
+}
 
 boolean performBuildScriptUpdate(String projectDir) {
     if (isNewBuildScriptVersionAvailable(projectDir)) {
         def buildscriptFile = getFile("build.gradle")
         availableBuildScriptUrl().withInputStream { i -> buildscriptFile.withOutputStream { it << i } }
         out.style(Style.Success).print("Build script updated. Please REIMPORT the project or RESTART your IDE!")
+        verifySettingsGradle()
         return true
     }
     return false
