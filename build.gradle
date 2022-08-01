@@ -122,7 +122,6 @@ boolean usesMixinDebug = project.hasProperty('usesMixinDebug') ?: project.usesMi
 boolean forceEnableMixins = project.hasProperty('forceEnableMixins') ? project.forceEnableMixins.toBoolean() : false
 String channel = project.hasProperty('channel') ? project.channel : 'stable'
 String mappingsVersion = project.hasProperty('mappingsVersion') ? project.mappingsVersion : '12'
-String remoteMappings = project.hasProperty('remoteMappings') ? project.remoteMappings : 'https://raw.githubusercontent.com/MinecraftForge/FML/1.7.10/conf/'
 String javaSourceDir = "src/main/java/"
 String scalaSourceDir = "src/main/scala/"
 String kotlinSourceDir = "src/main/kotlin/"
@@ -855,6 +854,7 @@ if(file(deobfFile).exists()) {
 }
 
 String mappingsVer
+String remoteMappings = project.hasProperty('remoteMappings') ? project.remoteMappings : 'https://raw.githubusercontent.com/MinecraftForge/FML/1.7.10/conf/'
 if(remoteMappings) {
     String id = "${forgeVersion.split("\\.")[3]}-$minecraftVersion"
     String mappingsZIP = "$cacheDir/forge_gradle/maven_downloader/de/oceanlabs/mcp/mcp_snapshot_nodoc/$id/mcp_snapshot_nodoc-${id}.zip"
