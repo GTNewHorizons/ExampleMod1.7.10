@@ -397,7 +397,7 @@ jar {
 }
 
 reobf {
-    if(usesMixins.toBoolean()) {
+    if(usesMixins.toBoolean() && file(mixinSrg).exists()) {
         addExtraSrgFile mixinSrg
     }
 }
