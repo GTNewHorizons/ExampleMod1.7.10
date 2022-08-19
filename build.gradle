@@ -57,7 +57,7 @@ plugins {
     id 'com.palantir.git-version'        version '0.13.0'       apply false
     id 'de.undercouch.download'          version '5.0.1'
     id 'com.github.gmazzo.buildconfig'   version '3.0.3'        apply false
-    id "com.diffplug.spotless"           version "6.7.2"
+    id 'com.diffplug.spotless'           version '6.7.2'        apply false
 }
 verifySettingsGradle()
 
@@ -90,7 +90,13 @@ idea {
         downloadSources = true
     }
 }
-apply from: Blowdryer.file('spotless.gradle')
+
+boolean disableSpotless = project.hasProperty("disableSpotless") ? project.disableSpotless.toBoolean() : false
+
+if (!disableSpotless) {
+    apply plugin: 'com.diffplug.spotless'
+    apply from: Blowdryer.file('spotless.gradle')
+}
 
 if(JavaVersion.current() != JavaVersion.VERSION_1_8) {
     throw new GradleException("This project requires Java 8, but it's running on " + JavaVersion.current())
