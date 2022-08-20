@@ -676,7 +676,7 @@ static URL exampleGitAttributesUrl() {
 }
 
 
-def verifyGitAttributes() {
+boolean verifyGitAttributes() {
     def gitattributesFile = getFile(".gitattributes")
     if (!gitattributesFile.exists()) {
         println("Downloading default .gitattributes")
@@ -685,17 +685,19 @@ def verifyGitAttributes() {
             workingDir '.'
             commandLine 'git', 'add', '--renormalize', '.'
         }
-        throw new GradleException(".gitattributes has been updated, please re-run task.")
+        return true
     }
+    return false
 }
 
-def verifySettingsGradle() {
+boolean verifySettingsGradle() {
     def settingsFile = getFile("settings.gradle")
     if (!settingsFile.exists()) {
         println("Downloading default settings.gradle")
         exampleSettingsGradleUrl().withInputStream { i -> settingsFile.withOutputStream { it << i } }
-        throw new GradleException("Settings.gradle has been updated, please re-run task.")
+        return true
     }
+    return false
 }
 
 boolean performBuildScriptUpdate(String projectDir) {
@@ -703,8 +705,8 @@ boolean performBuildScriptUpdate(String projectDir) {
         def buildscriptFile = getFile("build.gradle")
         availableBuildScriptUrl().withInputStream { i -> buildscriptFile.withOutputStream { it << i } }
         out.style(Style.Success).print("Build script updated. Please REIMPORT the project or RESTART your IDE!")
-        verifySettingsGradle()
-        verifyGitAttributes()
+        if(verifySettingsGradle() || verifyGitAttributes())
+            throw new GradleException("Settings has been updated, please re-run task.")
         return true
     }
     return false
