@@ -59,7 +59,8 @@ plugins {
     id 'com.github.gmazzo.buildconfig'   version '3.0.3'        apply false
     id 'com.diffplug.spotless'           version '6.7.2'        apply false
 }
-verifySettingsGradle()
+if(verifySettingsGradle() || verifyGitAttributes())
+    throw new GradleException("Settings has been updated, please re-run task.")
 
 dependencies {
     implementation 'com.diffplug:blowdryer:1.6.0'
