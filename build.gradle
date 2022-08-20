@@ -666,12 +666,28 @@ if (!project.getGradle().startParameter.isOffline() && isNewBuildScriptVersionAv
 }
 
 static URL availableBuildScriptUrl() {
-    new URL("https://raw.githubusercontent.com/GTNewHorizons/ExampleMod1.7.10/main/build.gradle")
+    new URL("https://raw.githubusercontent.com/GTNewHorizons/ExampleMod1.7.10/master/build.gradle")
 }
 static URL exampleSettingsGradleUrl() {
-    new URL("https://raw.githubusercontent.com/GTNewHorizons/ExampleMod1.7.10/main/settings.gradle.example")
+    new URL("https://raw.githubusercontent.com/GTNewHorizons/ExampleMod1.7.10/master/settings.gradle.example")
+}
+static URL exampleGitAttributesUrl() {
+    new URL("https://raw.githubusercontent.com/GTNewHorizons/ExampleMod1.7.10/master/.gitattributes")
 }
 
+
+def verifyGitAttributes() {
+    def gitattributesFile = getFile(".gitattributes")
+    if (!gitattributesFile.exists()) {
+        println("Downloading default .gitattributes")
+        exampleGitAttributesUrl().withInputStream { i -> gitattributesFile.withOutputStream { it << i } }
+        exec {
+            workingDir '.'
+            commandLine 'git', 'add', '--renormalize', '.'
+        }
+        throw new GradleException(".gitattributes has been updated, please re-run task.")
+    }
+}
 
 def verifySettingsGradle() {
     def settingsFile = getFile("settings.gradle")
@@ -688,6 +704,7 @@ boolean performBuildScriptUpdate(String projectDir) {
         availableBuildScriptUrl().withInputStream { i -> buildscriptFile.withOutputStream { it << i } }
         out.style(Style.Success).print("Build script updated. Please REIMPORT the project or RESTART your IDE!")
         verifySettingsGradle()
+        verifyGitAttributes()
         return true
     }
     return false
