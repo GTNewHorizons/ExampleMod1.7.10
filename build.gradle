@@ -60,7 +60,9 @@ plugins {
     id 'com.github.gmazzo.buildconfig' version '3.0.3' apply false
     id 'com.diffplug.spotless' version '6.7.2' apply false
 }
-if (verifySettingsGradle() || verifyGitAttributes())
+boolean settingsupdated = verifySettingsGradle()
+settingsupdated = verifyGitAttributes() || settingsupdated
+if (settingsupdated)
     throw new GradleException("Settings has been updated, please re-run task.")
 
 dependencies {
@@ -708,7 +710,9 @@ boolean performBuildScriptUpdate(String projectDir) {
         def buildscriptFile = getFile("build.gradle")
         availableBuildScriptUrl().withInputStream { i -> buildscriptFile.withOutputStream { it << i } }
         out.style(Style.Success).print("Build script updated. Please REIMPORT the project or RESTART your IDE!")
-        if (verifySettingsGradle() || verifyGitAttributes())
+        boolean settingsupdated = verifySettingsGradle()
+        settingsupdated = verifyGitAttributes() || settingsupdated
+        if (settingsupdated)
             throw new GradleException("Settings has been updated, please re-run task.")
         return true
     }
