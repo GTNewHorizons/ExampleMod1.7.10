@@ -26,6 +26,12 @@
 *.[tT][gG][zZ]          binary
 *.[zZ][iI][pP]          binary
 
+*.[tT][cC][nN]          binary
+*.[sS][oO]              binary
+*.[dD][lL][lL]          binary
+*.[dD][yY][lL][iI][bB]  binary
+*.[pP][sS][dD]          binary
+
 *.[pP][aA][tT][cC][hH]  -text
 
 *.[bB][aA][tT]          text eol=crlf
