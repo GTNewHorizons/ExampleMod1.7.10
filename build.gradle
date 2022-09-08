@@ -1,4 +1,4 @@
-//version: 1661114848
+//version: 1662645835
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -59,6 +59,8 @@ plugins {
     id 'de.undercouch.download' version '5.0.1'
     id 'com.github.gmazzo.buildconfig' version '3.0.3' apply false
     id 'com.diffplug.spotless' version '6.7.2' apply false
+    id 'com.modrinth.minotaur' version '2.+' apply false
+    id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
 }
 boolean settingsupdated = verifySettingsGradle()
 settingsupdated = verifyGitAttributes() || settingsupdated
@@ -651,6 +653,16 @@ publishing {
     }
 }
 
+if (file('modrinth.gradle').exists()) {
+    apply plugin: 'com.modrinth.minotaur'
+    apply from: 'modrinth.gradle'
+}
+
+if (file('curseforge.gradle').exists()) {
+    apply plugin: 'com.matthewprenger.cursegradle'
+    apply from: 'curseforge.gradle'
+}
+
 // Updating
 task updateBuildScript {
     doLast {
@@ -965,4 +977,13 @@ def checkPropertyExists(String propertyName) {
 
 def getFile(String relativePath) {
     return new File(projectDir, relativePath)
+}
+
+def getSecondaryArtifacts() {
+    // Because noPublishedSources from the beginning of the script is somehow not visible here...
+    boolean noPublishedSources = project.hasProperty("noPublishedSources") ? project.noPublishedSources.toBoolean() : false
+    def secondaryArtifacts = [devJar]
+    if (!noPublishedSources) secondaryArtifacts += [sourcesJar]
+    if (apiPackage) secondaryArtifacts += [apiJar]
+    return secondaryArtifacts
 }

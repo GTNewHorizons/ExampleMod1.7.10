@@ -1,0 +1,27 @@
+// Delete this file if you don't want to automatically publish this mod to Modrinth.
+// See https://github.com/modrinth/minotaur for more informations about publishing to Modrinth.
+
+modrinth {
+    // REQUIRED: This can be the project ID or the slug. Either will work!
+    projectId = ""
+
+    dependencies {
+        // scope.type "<slug>"
+        // The scope can be `required`, `optional`, `incompatible`, or `embedded`
+        // The type can either be `project` or `version`
+    }
+
+    // Doesn't actually upload the version, and prints the data to be uploaded.
+    debugMode = false
+
+
+    // Only change these properties if you know what you are doing!
+    token = System.getenv("MODRINTH_TOKEN")
+    versionNumber = gitVersion()
+    changelog = file("CHANGELOG.md").getText("UTF-8")
+    uploadFile = jar
+    additionalFiles = getSecondaryArtifacts()
+    versionType = gitVersion().endsWith("-pre") ? "beta" : "release"
+    gameVersions = [minecraftVersion]
+    loaders = ["forge"]
+}
