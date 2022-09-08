@@ -16,7 +16,7 @@ We all have been there! Check out our [FAQ](https://github.com/GTNewHorizons/Exa
 ### Getting started
 
 Creating mod from scratch:
-1. Unzip [project starter](https://github.com/GTNewHorizons/ExampleMod1.7.10/releases/download/latest-packages/starter.zip) into project directory.
+1. Unzip [project starter](https://github.com/GTNewHorizons/ExampleMod1.7.10/releases/download/master-packages/starter.zip) into project directory.
 2. Replace placeholders in LICENSE-template and rename it to LICENSE, or remove LICENSE-template and put any other license you like on your code. This is an permissive OSS project and we encourage you participate in OSS movement by having permissive license like one in template. You can find out pros and cons of OSS software in [this article](https://www.freecodecamp.org/news/what-is-great-about-developing-open-source-and-what-is-not/)
 3. Ensure your project is under VCS. For example initialise git repository by running `git init; git commit --message "initialized repository"`.
 4. Replace placeholders (edit values in gradle.properties, change example package and class names, etc.)
