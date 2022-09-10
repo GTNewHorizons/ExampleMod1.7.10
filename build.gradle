@@ -662,7 +662,7 @@ publishing {
     }
 }
 
-if (!modrinthProjectId.size() != 0) {
+if (modrinthProjectId.size() != 0) {
     apply plugin: 'com.modrinth.minotaur'
 
     File changelogFile = new File("CHANGELOG.md")
