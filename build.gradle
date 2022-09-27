@@ -414,6 +414,8 @@ jar {
         dependsOn(shadowJar)
         enabled = false
     }
+
+    finalizedBy reobf
 }
 
 reobf {
