@@ -662,7 +662,7 @@ publishing {
     }
 }
 
-if (modrinthProjectId.size() != 0) {
+if (modrinthProjectId.size() != 0 && System.getenv("MODRINTH_TOKEN") != null) {
     apply plugin: 'com.modrinth.minotaur'
 
     File changelogFile = new File("CHANGELOG.md")
@@ -695,7 +695,7 @@ if (modrinthProjectId.size() != 0) {
     tasks.publish.dependsOn(tasks.modrinth)
 }
 
-if (curseForgeProjectId.size() != 0) {
+if (curseForgeProjectId.size() != 0 && System.getenv("CURSEFORGE_TOKEN") != null) {
     apply plugin: 'com.matthewprenger.cursegradle'
 
     File changelogFile = new File("CHANGELOG.md")
