@@ -665,7 +665,7 @@ publishing {
 if (modrinthProjectId.size() != 0 && System.getenv("MODRINTH_TOKEN") != null) {
     apply plugin: 'com.modrinth.minotaur'
 
-    File changelogFile = new File("CHANGELOG.md")
+    File changelogFile = new File(System.getenv("CHANGELOG_FILE") ?: "CHANGELOG.md")
 
     modrinth {
         token = System.getenv("MODRINTH_TOKEN")
@@ -698,7 +698,7 @@ if (modrinthProjectId.size() != 0 && System.getenv("MODRINTH_TOKEN") != null) {
 if (curseForgeProjectId.size() != 0 && System.getenv("CURSEFORGE_TOKEN") != null) {
     apply plugin: 'com.matthewprenger.cursegradle'
 
-    File changelogFile = new File("CHANGELOG.md")
+    File changelogFile = new File(System.getenv("CHANGELOG_FILE") ?: "CHANGELOG.md")
 
     curseforge {
         apiKey = System.getenv("CURSEFORGE_TOKEN")
