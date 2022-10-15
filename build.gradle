@@ -175,8 +175,8 @@ if (accessTransformersFile) {
 }
 
 if (usesMixins.toBoolean()) {
-    if (mixinsPackage.isEmpty() || mixinPlugin.isEmpty()) {
-        throw new GradleException("\"mixinPlugin\" requires \"mixinsPackage\" and \"mixinPlugin\" to be set!")
+    if (mixinsPackage.isEmpty()) {
+        throw new GradleException("\"mixinPlugin\" requires \"mixinsPackage\" to be set!")
     }
     final String mixinPackagePath = mixinsPackage.toString().replaceAll("\\.", "/")
     final String mixinPluginPath = mixinPlugin.toString().replaceAll("\\.", "/")
