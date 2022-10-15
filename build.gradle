@@ -358,12 +358,13 @@ task generateAssets {
             // We might not have a mixin plugin if we're using early/late mixins
              mixinPluginLine +=   """\n  "plugin": "${modGroup}.${mixinPlugin}", """
         }
-        def mixinConfigFile = getFile("/src/main/resources/mixins." + modId + ".json");
+        def mixinConfigFile = getFile("/src/main/resources/mixins." + modId + ".json")
         if (!mixinConfigFile.exists()) {
             mixinConfigFile.text = """{
   "required": true,
   "minVersion": "0.8.5-GTNH",
   "package": "${modGroup}.${mixinsPackage}",${mixinPluginLine}
+  "refmap": "${mixingConfigRefMap}",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "mixins": [],
