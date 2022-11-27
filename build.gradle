@@ -330,6 +330,10 @@ repositories {
             name = "GTNH Maven"
             url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
         }
+        maven {
+            maven = "Fabric Maven"
+            url = "https://maven.fabricmc.net/"
+        }
     }
 }
 
@@ -339,6 +343,7 @@ dependencies {
         annotationProcessor('com.google.guava:guava:24.1.1-jre')
         annotationProcessor('com.google.code.gson:gson:2.8.6')
         annotationProcessor('com.gtnewhorizon:gtnhmixins:2.1.1:processor')
+        runtimeOnly('org.jetbrains:intellij-fernflower:1.2.1.16')
     }
     if (usesMixins.toBoolean() || forceEnableMixins.toBoolean()) {
         compile('com.gtnewhorizon:gtnhmixins:2.1.1')
