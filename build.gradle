@@ -331,7 +331,7 @@ repositories {
             url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
         }
         maven {
-            maven = "Fabric Maven"
+            name = "Fabric Maven"
             url = "https://maven.fabricmc.net/"
         }
     }
