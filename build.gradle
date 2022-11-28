@@ -31,7 +31,7 @@ buildscript {
             url 'https://maven.minecraftforge.net'
         }
         maven {
-            // GTNH ForgeGradle Fork
+            // GTNH ForgeGradle and ASM Fork
             name = "GTNH Maven"
             url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
         }
