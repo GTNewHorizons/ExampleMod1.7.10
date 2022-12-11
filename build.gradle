@@ -705,7 +705,7 @@ if (modrinthProjectId.size() != 0 && System.getenv("MODRINTH_TOKEN") != null) {
         }
     }
     if (usesMixins.toBoolean()) {
-        addModrinthDep("required", "version", "gtnhmixins")
+        addModrinthDep("required", "project", "gtnhmixins")
     }
     tasks.modrinth.dependsOn(build)
     tasks.publish.dependsOn(tasks.modrinth)
