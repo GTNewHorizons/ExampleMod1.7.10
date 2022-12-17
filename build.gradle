@@ -280,7 +280,9 @@ minecraft {
     runDir = 'run'
 
     if (replaceGradleTokenInFile) {
-        replaceIn replaceGradleTokenInFile
+        for (f in replaceGradleTokenInFile.split(',')) {
+            replaceIn f
+        }
         if (gradleTokenModId) {
             replace gradleTokenModId, modId
         }
