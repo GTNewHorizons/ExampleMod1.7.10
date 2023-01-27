@@ -803,7 +803,7 @@ task updateBuildScript {
     }
 }
 
-if (!project.getGradle().startParameter.isOffline() && !System.getenv('DISABLE_BUILDSCRIPT_UPDATE_CHECK') && isNewBuildScriptVersionAvailable(projectDir.toString())) {
+if (!project.getGradle().startParameter.isOffline() && !Boolean.getBoolean('DISABLE_BUILDSCRIPT_UPDATE_CHECK') && isNewBuildScriptVersionAvailable(projectDir.toString())) {
     if (autoUpdateBuildScript.toBoolean()) {
         performBuildScriptUpdate(projectDir.toString())
     } else {
