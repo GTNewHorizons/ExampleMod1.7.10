@@ -825,10 +825,6 @@ static URL exampleGitAttributesUrl() {
     new URL("https://raw.githubusercontent.com/GTNewHorizons/ExampleMod1.7.10/master/.gitattributes")
 }
 
-static URL exampleEclipseFormatUrl() {
-    new URL("https://raw.githubusercontent.com/GTNewHorizons/ExampleMod1.7.10/master/spotless.eclipseformat.xml")
-}
-
 
 boolean verifyGitAttributes() {
     def gitattributesFile = getFile(".gitattributes")
@@ -854,24 +850,13 @@ boolean verifySettingsGradle() {
     return false
 }
 
-boolean verifyEclipseFormat() {
-    def settingsFile = getFile("spotless.eclipseformat.xml")
-    if (!settingsFile.exists()) {
-        println("Downloading default spotless.eclipseformat.xml")
-        exampleEclipseFormatUrl().withInputStream { i -> settingsFile.withOutputStream { it << i } }
-        return true
-    }
-    return false
-}
-
 boolean performBuildScriptUpdate(String projectDir) {
     if (isNewBuildScriptVersionAvailable(projectDir)) {
         def buildscriptFile = getFile("build.gradle")
         availableBuildScriptUrl().withInputStream { i -> buildscriptFile.withOutputStream { it << i } }
         out.style(Style.Success).print("Build script updated. Please REIMPORT the project or RESTART your IDE!")
         boolean settingsupdated = verifySettingsGradle()
-        settingsupdated |= verifyGitAttributes()
-        settingsupdated |= verifyEclipseFormat()
+        settingsupdated = verifyGitAttributes() || settingsupdated
         if (settingsupdated)
             throw new GradleException("Settings has been updated, please re-run task.")
         return true
