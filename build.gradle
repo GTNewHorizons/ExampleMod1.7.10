@@ -1031,6 +1031,24 @@ def deobf(String sourceURL) {
     }
 }
 
+def deobfMaven(String repoURL, String mavenDep) {
+    if (!repoURL.endsWith("/")) {
+        repoURL += "/"
+    }
+    String[] parts = mavenDep.split(":")
+    parts[0] = parts[0].replace('.', '/')
+    def jarURL = repoURL + parts[0] + "/" + parts[1] + "/" + parts[2] + "/" + parts[1] + "-" + parts[2] + ".jar"
+    return deobf(jarURL)
+}
+
+def deobfCurse(String curseDep) {
+    try {
+        return deobfMaven("https://www.cursemaven.com/", "curse.maven:$curseDep")
+    } catch (Exception ignored) {
+        out.style(Style.Failure).println("Failed to get $curseDep from cursemaven.")
+    }
+}
+
 // The method above is to be preferred. Use this method if the filename is not at the end of the URL.
 def deobf(String sourceURL, String rawFileName) {
     String bon2Version = "2.5.1"
