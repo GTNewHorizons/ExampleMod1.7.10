@@ -8,5 +8,5 @@ public class Tags {
     public static final String MODID = "examplemod";
     public static final String MODNAME = "Example Mod";
     public static final String VERSION = "GRADLETOKEN_VERSION"; // will be replaced by your configuration values at
-                                                                // build time
+    // build time
 }
