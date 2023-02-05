@@ -633,6 +633,7 @@ tasks.named("processResources", ProcessResources).configure {
 
     if (usesMixins.toBoolean()) {
         from refMap
+        dependsOn("compileJava", "compileScala")
     }
 }
 
