@@ -9,6 +9,7 @@
 import com.diffplug.blowdryer.Blowdryer
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.gtnewhorizons.retrofuturagradle.ObfuscationAttribute
 import com.gtnewhorizons.retrofuturagradle.mcp.ReobfuscatedJar
 import com.gtnewhorizons.retrofuturagradle.minecraft.RunMinecraftTask
 import com.matthewprenger.cursegradle.CurseArtifact
@@ -412,6 +413,16 @@ configurations.configureEach {
             if (dep.group == "net.industrial-craft" && dep.name == "industrialcraft-2") {
                 // https://www.curseforge.com/minecraft/mc-mods/industrial-craft/files/2353971
                 project.dependencies.reobfJarConfiguration("curse.maven:ic2-242638:2353971")
+            }
+        }
+    }
+    def obfuscationAttr = it.attributes.getAttribute(ObfuscationAttribute.OBFUSCATION_ATTRIBUTE)
+    if (obfuscationAttr != null && obfuscationAttr.name == ObfuscationAttribute.SRG) {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            // Remap CoFH core cursemaven dev jar to the obfuscated version for runObfClient/Server
+            if (details.requested.group == 'curse.maven' && details.requested.name.endsWith('-69162') && details.requested.version == '2388751') {
+                details.useVersion '2388750'
+                details.because 'Pick obfuscated jar'
             }
         }
     }
