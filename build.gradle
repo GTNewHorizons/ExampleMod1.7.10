@@ -127,6 +127,9 @@ propertyDefaultIfUnset("gradleTokenGroupName", "")
 propertyDefaultIfUnset("enableModernJavaSyntax", false) // On by default for new projects only
 propertyDefaultIfUnset("enableGenericInjection", false) // On by default for new projects only
 
+// this is meant to be set using the user wide property file. by default we do nothing.
+propertyDefaultIfUnset("ideaOverrideBuildType", "") // Can be nothing, "gradle" or "idea"
+
 project.extensions.add(Blowdryer, "Blowdryer", Blowdryer) // Make blowdryer available in "apply from:" scripts
 if (!disableSpotless) {
     apply plugin: 'com.diffplug.spotless'
@@ -905,6 +908,19 @@ idea {
     }
     project {
         settings {
+            if (ideaOverrideBuildType != "") {
+                delegateActions {
+                    if ("gradle".equalsIgnoreCase(ideaOverrideBuildType)) {
+                        delegateBuildRunToGradle = true
+                        testRunner = org.jetbrains.gradle.ext.ActionDelegationConfig.TestRunner.GRADLE
+                    } else if ("idea".equalsIgnoreCase(ideaOverrideBuildType)) {
+                        delegateBuildRunToGradle = false
+                        testRunner = org.jetbrains.gradle.ext.ActionDelegationConfig.TestRunner.PLATFORM
+                    } else {
+                        throw GradleScriptException('Accepted value for ideaOverrideBuildType is one of gradle or idea.')
+                    }
+                }
+            }
             runConfigurations {
                 "1. Run Client"(Gradle) {
                     taskNames = ["runClient"]
@@ -943,7 +959,7 @@ idea {
                 }
                 "Run Client (IJ Native)"(Application) {
                     mainClass = "GradleStart"
-                    moduleName = project.name + ".main"
+                    moduleName = project.name + ".ideVirtualMain"
                     afterEvaluate {
                         workingDirectory = tasks.runClient.workingDir.absolutePath
                         programParameters = tasks.runClient.calculateArgs(project).collect { '"' + it + '"' }.join(' ')
@@ -954,7 +970,7 @@ idea {
                 }
                 "Run Server (IJ Native)"(Application) {
                     mainClass = "GradleStartServer"
-                    moduleName = project.name + ".main"
+                    moduleName = project.name + ".ideVirtualMain"
                     afterEvaluate {
                         workingDirectory = tasks.runServer.workingDir.absolutePath
                         programParameters = tasks.runServer.calculateArgs(project).collect { '"' + it + '"' }.join(' ')
