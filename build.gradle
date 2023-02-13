@@ -252,12 +252,14 @@ if (apiPackage) {
 }
 
 if (accessTransformersFile) {
-    String targetFile = "src/main/resources/META-INF/" + accessTransformersFile
-    if (!getFile(targetFile).exists()) {
-        throw new GradleException("Could not resolve \"accessTransformersFile\"! Could not find " + targetFile)
+    for (atFile in accessTransformersFile.split(",")) {
+        String targetFile = "src/main/resources/META-INF/" + atFile.trim()
+        if (!getFile(targetFile).exists()) {
+            throw new GradleException("Could not resolve \"accessTransformersFile\"! Could not find " + targetFile)
+        }
+        tasks.deobfuscateMergedJarToSrg.accessTransformerFiles.from(targetFile)
+        tasks.srgifyBinpatchedJar.accessTransformerFiles.from(targetFile)
     }
-    tasks.deobfuscateMergedJarToSrg.accessTransformerFiles.from(targetFile)
-    tasks.srgifyBinpatchedJar.accessTransformerFiles.from(targetFile)
 } else {
     boolean atsFound = false
     for (File at : sourceSets.getByName("main").resources.files) {
