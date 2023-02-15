@@ -390,6 +390,8 @@ minecraft {
 
     username = developmentEnvironmentUserName.toString()
 
+    lwjgl3Version = "3.3.2-SNAPSHOT"
+
     // Enable assertions in the current mod
     extraRunJvmArguments.add("-ea:${modGroup}")
 
@@ -515,6 +517,13 @@ repositories {
                 name = "Fabric Maven"
                 url = "https://maven.fabricmc.net/"
             }
+        }
+    }
+    maven {
+        name 'sonatype'
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        content {
+            includeGroup "org.lwjgl"
         }
     }
     if (includeWellKnownRepositories.toBoolean()) {
