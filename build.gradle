@@ -72,7 +72,7 @@ plugins {
     id 'com.diffplug.spotless' version '6.7.2' apply false
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.1.7'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.2.0'
 }
 boolean settingsupdated = verifySettingsGradle()
 settingsupdated = verifyGitAttributes() || settingsupdated
@@ -756,8 +756,8 @@ public abstract class RunHotswappableMinecraftTask extends RunMinecraftTask {
     public boolean setEnableHotswap(boolean enable) { enableHotswap = enable }
 
     @Inject
-    public RunHotswappableMinecraftTask(Side side, String superTask) {
-        super(side)
+    public RunHotswappableMinecraftTask(Side side, String superTask, org.gradle.api.invocation.Gradle gradle) {
+        super(side, gradle)
 
         this.lwjglVersion = 3
         this.javaLauncher = project.javaToolchains.launcherFor(project.java17Toolchain)
