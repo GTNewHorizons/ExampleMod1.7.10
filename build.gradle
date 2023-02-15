@@ -72,7 +72,7 @@ plugins {
     id 'com.diffplug.spotless' version '6.7.2' apply false
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.2.0'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.2.1'
 }
 boolean settingsupdated = verifySettingsGradle()
 settingsupdated = verifyGitAttributes() || settingsupdated
@@ -387,6 +387,8 @@ minecraft {
     if (enableGenericInjection.toBoolean()) {
         injectMissingGenerics.set(true)
     }
+
+    username = developmentEnvironmentUserName.toString()
 
     // Enable assertions in the current mod
     extraRunJvmArguments.add("-ea:${modGroup}")
@@ -788,6 +790,8 @@ runClient17Task.configure {
     description = "Runs the modded client using Java 17, lwjgl3ify and Hodgepodge"
     dependsOn(setupHotswapAgentTask, mcpTasks.launcherSources.classesTaskName, minecraftTasks.taskDownloadVanillaAssets, mcpTasks.taskPackagePatchedMc, 'jar')
     mainClass = "GradleStart"
+    username = minecraft.username
+    userUUID = minecraft.userUUID
 }
 
 def runServer17Task = tasks.register("runServer17", RunHotswappableMinecraftTask, Side.SERVER, "runServer")
