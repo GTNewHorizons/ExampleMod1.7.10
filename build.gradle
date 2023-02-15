@@ -679,13 +679,13 @@ ext.java17DependenciesCfg = configurations.create("java17Dependencies")
 ext.java17PatchDependenciesCfg = configurations.create("java17PatchDependencies")
 
 dependencies {
-    def lwjgl3ifyVersion = '1.1.21'
+    def lwjgl3ifyVersion = '1.1.28'
     def asmVersion = '9.4'
     if (modId != 'lwjgl3ify') {
         java17Dependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}")
     }
     if (modId != 'hodgepodge') {
-        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.0.31')
+        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.0.34')
     }
 
     java17PatchDependencies('net.minecraft:launchwrapper:1.15') {transitive = false}
