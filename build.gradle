@@ -31,7 +31,6 @@ import javax.inject.Inject
 
 buildscript {
     repositories {
-        mavenLocal()
         mavenCentral()
 
         maven {
@@ -52,6 +51,8 @@ buildscript {
             name 'Scala CI dependencies'
             url 'https://repo1.maven.org/maven2/'
         }
+
+        mavenLocal()
     }
 }
 plugins {
