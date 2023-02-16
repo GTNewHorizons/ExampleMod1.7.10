@@ -1196,9 +1196,20 @@ def addCurseForgeRelation(String type, String name) {
 }
 
 // Updating
+
+def buildscriptGradleVersion = "8.0"
+
+tasks.named('wrapper', Wrapper).configure {
+    gradleVersion = buildscriptGradleVersion
+}
+
 tasks.register('updateBuildScript') {
     group = 'GTNH Buildscript'
     description = 'Updates the build script to the latest version'
+
+    if (gradle.gradleVersion != buildscriptGradleVersion && !Boolean.getBoolean('DISABLE_BUILDSCRIPT_GRADLE_UPDATE')) {
+        dependsOn('wrapper')
+    }
 
     doLast {
         if (performBuildScriptUpdate()) return
@@ -1212,6 +1223,9 @@ if (!project.getGradle().startParameter.isOffline() && !Boolean.getBoolean('DISA
         performBuildScriptUpdate()
     } else {
         out.style(Style.SuccessHeader).println("Build script update available! Run 'gradle updateBuildScript'")
+        if (gradle.gradleVersion != buildscriptGradleVersion) {
+            out.style(Style.SuccessHeader).println("updateBuildScript can update gradle from ${gradle.gradleVersion} to ${buildscriptGradleVersion}\n")
+        }
     }
 }
 
