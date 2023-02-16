@@ -20,6 +20,7 @@ import cpw.mods.fml.relauncher.Side
 import org.gradle.api.tasks.options.Option;
 import org.gradle.internal.logging.text.StyledTextOutput.Style
 import org.gradle.internal.logging.text.StyledTextOutputFactory
+import org.gradle.internal.xml.XmlTransformer
 import org.jetbrains.gradle.ext.*
 
 import java.nio.file.Files
@@ -1001,6 +1002,51 @@ idea {
                     moduleJavacAdditionalOptions = [
                         (project.name + ".main"): tasks.compileJava.options.compilerArgs.collect { '"' + it + '"' }.join(' ')
                     ]
+                }
+            }
+            withIDEADir { File ideaDir ->
+                if (!ideaDir.path.contains(".idea")) {
+                    // If an .ipr file exists, the project root directory is passed here instead of the .idea subdirectory
+                    ideaDir = new File(ideaDir, ".idea")
+                }
+                if (ideaDir.isDirectory()) {
+                    def miscFile = new File(ideaDir, "misc.xml")
+                    if (miscFile.isFile()) {
+                        boolean dirty = false
+                        def miscTransformer = new XmlTransformer()
+                        miscTransformer.addAction { root ->
+                            Node rootNode = root.asNode()
+                            def rootManager = rootNode
+                                .component.find { it.@name == 'ProjectRootManager' }
+                            if (!rootManager) {
+                                rootManager = rootNode.appendNode('component', ['name': 'ProjectRootManager', 'version': '2'])
+                                dirty = true
+                            }
+                            def output = rootManager.output
+                            if (!output) {
+                                output = rootManager.appendNode('output')
+                                dirty = true
+                            }
+                            if (!output.@url) {
+                                // Only modify the output url if it doesn't yet have one, or if the existing one is blank somehow.
+                                // This is a sensible default for most setups
+                                output.@url = 'file://$PROJECT_DIR$/build/ideaBuild'
+                                dirty = true
+                            }
+                        }
+                        def result = miscTransformer.transform(miscFile.text)
+                        if (dirty) {
+                            miscFile.write(result)
+                        }
+                    } else {
+                        miscFile.text = """<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectRootManager" version="2">
+    <output url="file://\$PROJECT_DIR\$/out" />
+  </component>
+</project>
+"""
+                    }
                 }
             }
         }
