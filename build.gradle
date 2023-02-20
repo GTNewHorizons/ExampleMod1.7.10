@@ -848,7 +848,7 @@ if (usesShadowedDependencies.toBoolean()) {
     tasks.register('relocateShadowJar', ConfigureShadowRelocation) {
         target = tasks.shadowJar
         prefix = modGroup + ".shadow"
-        enabled = minimizeShadowedDependencies.toBoolean()
+        enabled = relocateShadowedDependencies.toBoolean()
     }
     tasks.named("shadowJar", ShadowJar).configure {
         manifest {
@@ -864,7 +864,7 @@ if (usesShadowedDependencies.toBoolean()) {
             project.configurations.shadeCompile
         ]
         archiveClassifier.set('dev')
-        if (minimizeShadowedDependencies.toBoolean()) {
+        if (relocateShadowedDependencies.toBoolean()) {
             dependsOn(relocateShadowJar)
         }
     }
