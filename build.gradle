@@ -685,8 +685,13 @@ ext.java17Toolchain = (JavaToolchainSpec spec) -> {
     spec.vendor.set(JvmVendorSpec.matching("jetbrains"))
 }
 
-ext.java17DependenciesCfg = configurations.create("java17Dependencies")
-ext.java17PatchDependenciesCfg = configurations.create("java17PatchDependencies")
+ext.java17DependenciesCfg = configurations.create("java17Dependencies") {
+    extendsFrom(configurations.getByName("runtimeClasspath")) // Ensure consistent transitive dependency resolution
+    canBeConsumed = false
+}
+ext.java17PatchDependenciesCfg = configurations.create("java17PatchDependencies") {
+    canBeConsumed = false
+}
 
 dependencies {
     def lwjgl3ifyVersion = '1.1.28'
@@ -706,7 +711,7 @@ dependencies {
     java17PatchDependencies("org.ow2.asm:asm-util:${asmVersion}")
     java17PatchDependencies('org.ow2.asm:asm-deprecated:7.1')
     java17PatchDependencies("org.apache.commons:commons-lang3:3.12.0")
-    java17PatchDependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}:forgePatches")
+    java17PatchDependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}:forgePatches") {transitive = false}
 }
 
 ext.java17JvmArgs = [
