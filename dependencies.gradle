@@ -6,6 +6,10 @@
  *       Available at runtime but not compiletime for mods depending on this mod
  *  - compileOnly("g:n:v:c"): if the mod you're building doesn't need this dependency during runtime at all, e.g. for optional mods
  *       Not available at all for mods depending on this mod, only visible at compiletime for this mod
+ *  - compileOnlyApi("g:n:v:c"): like compileOnly, but also visible at compiletime for mods depending on this mod
+ *       Available at compiletime but not runtime for mods depending on this mod
+ *  - runtimeOnlyNonPublishable("g:n:v:c"): if you want to include a mod in this mod's runClient/runServer runs, but not publish it as a dependency
+ *       Not available at all for mods depending on this mod, only visible at runtime for this mod
  *  - runtimeOnly("g:n:v:c"): if you don't need this at compile time, but want it to be present at runtime
  *       Available at runtime for mods depending on this mod
  *  - annotationProcessor("g:n:v:c"): mostly for java compiler plugins, if you know you need this, use it, otherwise don't worry
@@ -19,8 +23,10 @@
  * You can exclude transitive dependencies (dependencies of the chosen dependency) by appending { transitive = false } if needed,
  * but use this sparingly as it can break using your mod as another mod's dependency if you're not careful.
  *
- * For more details, see https://docs.gradle.org/7.6/userguide/java_library_plugin.html#sec:java_library_configurations_graph
+ * Gradle names for some of the configuration can be misleading, compileOnlyApi and runtimeOnly both get published as dependencies in Maven, but compileOnly does not.
+ * The buildscript adds runtimeOnlyNonPublishable to also have a runtime dependency that's not published.
+ *
+ * For more details, see https://docs.gradle.org/8.0.1/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 dependencies {
-
 }

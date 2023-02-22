@@ -466,8 +466,9 @@ repositories.configureEach { repo ->
 apply from: 'repositories.gradle'
 
 configurations {
+    runtimeClasspath.extendsFrom(runtimeOnlyNonPublishable)
+    testRuntimeClasspath.extendsFrom(runtimeOnlyNonPublishable)
     for (config in [compileClasspath, runtimeClasspath, testCompileClasspath, testRuntimeClasspath]) {
-        config.extendsFrom(runtimeOnlyNonPublishable)
         if (usesShadowedDependencies.toBoolean()) {
             config.extendsFrom(shadowImplementation)
             // TODO: remove Compile after all uses are refactored to Implementation
