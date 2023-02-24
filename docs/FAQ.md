@@ -7,7 +7,3 @@ You may or may not run into this popup. For now, the only solution is to point t
 ![](http://i.imgur.com/gzBMLrr.png)
 
 Solution: Point it to `~/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/unpacked/conf`. On Windows, please use `%USERPROFILE%/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/unpacked/conf`.
-
-### Could not find :forgeBin:1.7.10-10.13.4.1614-1.7.10
-
-Run the gradle task `setupDecompWorkspace`.

@@ -20,7 +20,7 @@ Creating mod from scratch:
 2. Replace placeholders in LICENSE-template and rename it to LICENSE, or remove LICENSE-template and put any other license you like on your code. This is an permissive OSS project and we encourage you participate in OSS movement by having permissive license like one in template. You can find out pros and cons of OSS software in [this article](https://www.freecodecamp.org/news/what-is-great-about-developing-open-source-and-what-is-not/)
 3. Ensure your project is under VCS. For example initialise git repository by running `git init; git commit --message "initialized repository"`.
 4. Replace placeholders (edit values in gradle.properties, change example package and class names, etc.)
-5. Run `./gradlew setupDecompWorkspace` (if build fails with `Could not find :forgeBin:1.7.10-10.13.4.1614-1.7.10.` this should fix it)
+5. Run `./gradlew build`
 6. Make sure to check out the rest sections of this file.
 7. You are good to go!
 

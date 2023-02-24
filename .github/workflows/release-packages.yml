@@ -39,6 +39,7 @@ jobs:
                 -x "LICENSE" \
                 -x "gtnhShared/*" \
                 \
+                -x "packages/" \
                 -x "packages/starter.zip" \
                 -x "packages/migration.zip"
 
@@ -60,6 +61,7 @@ jobs:
                 -x "README.md" \
                 -x "gtnhShared/*" \
                 \
+                -x "packages/" \
                 -x "packages/starter.zip" \
                 -x "packages/migration.zip"
 
