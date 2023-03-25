@@ -202,7 +202,7 @@
         <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_angle_bracket_in_type_parameters" value="do not insert"/>
         <setting id="org.eclipse.jdt.core.formatter.insert_space_before_string_concatenation" value="insert"/>
         <setting id="org.eclipse.jdt.core.formatter.insert_space_after_lambda_arrow" value="insert"/>
-        <setting id="org.eclipse.jdt.core.formatter.join_lines_in_comments" value="true"/>
+        <setting id="org.eclipse.jdt.core.formatter.join_lines_in_comments" value="false"/>
         <setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_record_declaration" value="do not insert"/>
         <setting id="org.eclipse.jdt.core.formatter.insert_space_after_relational_operator" value="insert"/>
         <setting id="org.eclipse.jdt.core.formatter.insert_space_before_comma_in_multiple_field_declarations" value="do not insert"/>
