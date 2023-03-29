@@ -559,8 +559,9 @@ repositories {
 
 def mixinProviderGroup = "io.github.legacymoddingmc"
 def mixinProviderModule = "unimixins"
-def mixinProviderVersion = "0.1.5"
-def mixinProviderSpec = "${mixinProviderGroup}:${mixinProviderModule}:${mixinProviderVersion}"
+def mixinProviderVersion = "0.1.6"
+def mixinProviderSpecNoClassifer = "${mixinProviderGroup}:${mixinProviderModule}:${mixinProviderVersion}"
+def mixinProviderSpec = "${mixinProviderSpecNoClassifer}:dev"
 
 dependencies {
     if (usesMixins.toBoolean()) {
@@ -591,10 +592,11 @@ pluginManager.withPlugin('org.jetbrains.kotlin.kapt') {
 // https://docs.gradle.org/8.0.2/userguide/resolution_rules.html#sec:substitution_with_classifier
 configurations.all {
     resolutionStrategy.dependencySubstitution {
-        substitute module('com.gtnewhorizon:gtnhmixins') using module(mixinProviderSpec) withoutClassifier() because("Unimixins replaces other mixin mods")
-        substitute module('com.github.GTNewHorizons:Mixingasm') using module(mixinProviderSpec) withoutClassifier() because("Unimixins replaces other mixin mods")
-        substitute module('com.github.GTNewHorizons:SpongePoweredMixin') using module(mixinProviderSpec) withoutClassifier() because("Unimixins replaces other mixin mods")
-        substitute module('com.github.GTNewHorizons:SpongeMixins') using module(mixinProviderSpec) withoutClassifier() because("Unimixins replaces other mixin mods")
+        substitute module('com.gtnewhorizon:gtnhmixins') using module(mixinProviderSpecNoClassifer) withClassifier("dev") because("Unimixins replaces other mixin mods")
+        substitute module('com.github.GTNewHorizons:Mixingasm') using module(mixinProviderSpecNoClassifer) withClassifier("dev") because("Unimixins replaces other mixin mods")
+        substitute module('com.github.GTNewHorizons:SpongePoweredMixin') using module(mixinProviderSpecNoClassifer) withClassifier("dev") because("Unimixins replaces other mixin mods")
+        substitute module('com.github.GTNewHorizons:SpongeMixins') using module(mixinProviderSpecNoClassifer) withClassifier("dev") because("Unimixins replaces other mixin mods")
+        substitute module('io.github.legacymoddingmc:unimixins') using module(mixinProviderSpecNoClassifer) withClassifier("dev") because("Our previous unimixins upload was missing the dev classifier")
     }
 }
 
