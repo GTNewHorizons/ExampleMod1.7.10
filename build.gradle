@@ -73,7 +73,7 @@ plugins {
     id 'com.diffplug.spotless' version '6.7.2' apply false
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.2.3'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.2.4'
 }
 boolean settingsupdated = verifySettingsGradle()
 settingsupdated = verifyGitAttributes() || settingsupdated
@@ -405,8 +405,6 @@ minecraft {
     extraRunJvmArguments.add("-ea:${modGroup}")
 
     if (usesMixins.toBoolean() || forceEnableMixins.toBoolean()) {
-        extraTweakClasses.add("org.spongepowered.asm.launch.MixinTweaker")
-
         if (usesMixinDebug.toBoolean()) {
             extraRunJvmArguments.addAll([
                 "-Dmixin.debug.countInjections=true",
@@ -574,8 +572,10 @@ dependencies {
             runtimeOnlyNonPublishable('org.jetbrains:intellij-fernflower:1.2.1.16')
         }
     }
-    if (usesMixins.toBoolean() || forceEnableMixins.toBoolean()) {
+    if (usesMixins.toBoolean()) {
         implementation(mixinProviderSpec)
+    } else if (forceEnableMixins.toBoolean()) {
+        runtimeOnlyNonPublishable(mixinProviderSpec)
     }
 }
 
@@ -809,10 +809,6 @@ public abstract class RunHotswappableMinecraftTask extends RunMinecraftTask {
             !file.path.contains("2.9.4-nightly-20150209") // Remove lwjgl2
         }
         this.classpath(project.java17DependenciesCfg)
-
-        if (!(project.usesMixins.toBoolean() || project.forceEnableMixins.toBoolean())) {
-            this.extraArgs.addAll("--tweakClass", "org.spongepowered.asm.launch.MixinTweaker")
-        }
     }
 }
 
