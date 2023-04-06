@@ -5,7 +5,7 @@ Migration for the typical mod which doesn't use anything special but Minecraft f
 For core plugin, Mixins, shadowing, access transformers, ASM or etc. you'll need to do some extra steps.
 If they are missing in this document - we will gladly receive your suggestions/contribution.
 
-1. Copy and replace all files from [template](https://github.com/GTNewHorizons/ExampleMod1.7.10/releases/download/latest-packages/migration.zip) to your repository, but `build.gradle`
+1. Copy and replace all files from [template](https://github.com/GTNewHorizons/ExampleMod1.7.10/releases/download/master-packages/migration.zip) to your repository, but `build.gradle`
 2. Copy all repositories from your `build.gradle(.kts)` to `repositories.gradle`
 3. Copy all dependencies from your `build.gradle(.kts)` to `dependecies.gradle`
 4. replace your `build.gradle(.kts)` with `build.gradle` from template. In case you have written some custom tasks/configurations not present in the template - move them into `addon.gradle`. It will automatically be integrated if present.
