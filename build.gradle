@@ -80,7 +80,8 @@ settingsupdated = verifyGitAttributes() || settingsupdated
 if (settingsupdated)
     throw new GradleException("Settings has been updated, please re-run task.")
 
-if (project.file('.git/HEAD').isFile()) {
+// In submodules, .git is a file pointing to the real git dir
+if (project.file('.git/HEAD').isFile() || project.file('.git').isFile()) {
     apply plugin: 'com.palantir.git-version'
 }
 
