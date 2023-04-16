@@ -73,7 +73,7 @@ plugins {
     id 'com.diffplug.spotless' version '6.7.2' apply false
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.2.4'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.2.5'
 }
 boolean settingsupdated = verifySettingsGradle()
 settingsupdated = verifyGitAttributes() || settingsupdated
@@ -201,6 +201,14 @@ configurations {
         canBeConsumed = false
         canBeResolved = false
     }
+
+    create("devOnlyNonPublishable") {
+        description = "Runtime and compiletime dependencies that are not published alongside the jar (compileOnly + runtimeOnlyNonPublishable)"
+        canBeConsumed = false
+        canBeResolved = false
+    }
+    compileOnly.extendsFrom(devOnlyNonPublishable)
+    runtimeOnlyNonPublishable.extendsFrom(devOnlyNonPublishable)
 }
 
 if (enableModernJavaSyntax.toBoolean()) {
@@ -1388,7 +1396,7 @@ static int replaceParams(File file, Map<String, String> params) {
     return 0
 }
 
-// Dependency Deobfuscation
+// Dependency Deobfuscation (Deprecated, use the new RFG API documented in dependencies.gradle)
 
 def deobf(String sourceURL) {
     try {
@@ -1430,11 +1438,7 @@ def deobfMaven(String repoURL, String mavenDep) {
 }
 
 def deobfCurse(String curseDep) {
-    try {
-        return deobfMaven("https://www.cursemaven.com/", "curse.maven:$curseDep")
-    } catch (Exception ignored) {
-        out.style(Style.Failure).println("Failed to get $curseDep from cursemaven.")
-    }
+    return dependencies.rfg.deobf("curse.maven:$curseDep")
 }
 
 // The method above is to be preferred. Use this method if the filename is not at the end of the URL.
@@ -1442,34 +1446,7 @@ def deobf(String sourceURL, String rawFileName) {
     String bon2Version = "2.5.1"
     String fileName = URLDecoder.decode(rawFileName, "UTF-8")
     String cacheDir = "$project.gradle.gradleUserHomeDir/caches"
-    String bon2Dir = "$cacheDir/forge_gradle/deobf"
-    String bon2File = "$bon2Dir/BON2-${bon2Version}.jar"
     String obfFile = "$cacheDir/modules-2/files-2.1/${fileName}.jar"
-    String deobfFile = "$cacheDir/modules-2/files-2.1/${fileName}-deobf.jar"
-
-    if (file(deobfFile).exists()) {
-        return files(deobfFile)
-    }
-
-    String mappingsVer
-    String remoteMappings = project.hasProperty('remoteMappings') ? project.remoteMappings : 'https://raw.githubusercontent.com/MinecraftForge/FML/1.7.10/conf/'
-    if (remoteMappings) {
-        String id = "${forgeVersion.split("\\.")[3]}-$minecraftVersion"
-        String mappingsZIP = "$cacheDir/forge_gradle/maven_downloader/de/oceanlabs/mcp/mcp_snapshot_nodoc/$id/mcp_snapshot_nodoc-${id}.zip"
-
-        zipMappings(mappingsZIP, remoteMappings, bon2Dir)
-
-        mappingsVer = "snapshot_$id"
-    } else {
-        mappingsVer = "${channel}_$mappingsVersion"
-    }
-
-    download.run {
-        src "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/com/github/parker8283/BON2/$bon2Version-CUSTOM/BON2-$bon2Version-CUSTOM-all.jar"
-        dest bon2File
-        quiet true
-        overwrite false
-    }
 
     download.run {
         src sourceURL
@@ -1477,50 +1454,8 @@ def deobf(String sourceURL, String rawFileName) {
         quiet true
         overwrite false
     }
-
-    exec {
-        commandLine 'java', '-jar', bon2File, '--inputJar', obfFile, '--outputJar', deobfFile, '--mcVer', minecraftVersion, '--mappingsVer', mappingsVer, '--notch'
-        workingDir bon2Dir
-        standardOutput = new FileOutputStream("${deobfFile}.log")
-    }
-
-    return files(deobfFile)
+    return dependencies.rfg.deobf(files(obfFile))
 }
-
-def zipMappings(String zipPath, String url, String bon2Dir) {
-    File zipFile = new File(zipPath)
-    if (zipFile.exists()) {
-        return
-    }
-
-    String fieldsCache = "$bon2Dir/data/fields.csv"
-    String methodsCache = "$bon2Dir/data/methods.csv"
-
-    download.run {
-        src "${url}fields.csv"
-        dest fieldsCache
-        quiet true
-    }
-    download.run {
-        src "${url}methods.csv"
-        dest methodsCache
-        quiet true
-    }
-
-    zipFile.getParentFile().mkdirs()
-    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))
-
-    zos.putNextEntry(new ZipEntry("fields.csv"))
-    Files.copy(Paths.get(fieldsCache), zos)
-    zos.closeEntry()
-
-    zos.putNextEntry(new ZipEntry("methods.csv"))
-    Files.copy(Paths.get(methodsCache), zos)
-    zos.closeEntry()
-
-    zos.close()
-}
-
 // Helper methods
 
 def checkPropertyExists(String propertyName) {
