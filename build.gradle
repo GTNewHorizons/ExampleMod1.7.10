@@ -730,7 +730,7 @@ dependencies {
         java17Dependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}")
     }
     if (modId != 'hodgepodge') {
-        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.8')
+        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.12')
     }
 
     java17PatchDependencies('net.minecraft:launchwrapper:1.15') {transitive = false}
