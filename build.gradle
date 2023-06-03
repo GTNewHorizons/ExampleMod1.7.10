@@ -1282,7 +1282,7 @@ tasks.register('faq') {
             "but not build.gradle:buildscript.repositories - those ones are for gradle plugin metadata.\n\n" +
             "If your build fails to recognize the syntax of new Java versions, enable Jabel in your " +
             "gradle.properties. See how it's done in GTNH ExampleMod/gradle.properties. " +
-            "However, keep in mind that Jabel enables only syntax features, but not functions that were introduced in " +
+            "However, keep in mind that Jabel enables only syntax features, but not APIs that were introduced in " +
             "Java 9 or later.")
     }
 }
