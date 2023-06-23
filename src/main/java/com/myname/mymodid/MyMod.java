@@ -15,7 +15,7 @@ public class MyMod {
 
     public static final Logger LOG = LogManager.getLogger(Tags.MODID);
 
-    @SidedProxy(clientSide = "com.myname.mymodid.ClientProxy", serverSide = "com.myname.mymodid.CommonProxy")
+    @SidedProxy(clientSide = Tags.GROUPNAME + ".ClientProxy", serverSide = Tags.GROUPNAME + ".CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.EventHandler
