@@ -981,6 +981,9 @@ idea {
                 }
             }
             runConfigurations {
+                "0. Build and Test"(Gradle) {
+                    taskNames = ["build"]
+                }
                 "1. Run Client"(Gradle) {
                     taskNames = ["runClient"]
                 }
