@@ -359,7 +359,24 @@ catch (Exception ignored) {
 String identifiedVersion
 String versionOverride = System.getenv("VERSION") ?: null
 try {
-    identifiedVersion = versionOverride == null ? gitVersion() : versionOverride
+    // Produce a version based on the tag, or for branches something like 0.2.2-configurable-maven-and-extras.38+43090270b6-dirty
+    if (versionOverride == null) {
+        def gitDetails = versionDetails()
+        def isDirty = gitVersion().endsWith(".dirty") // No public API for this, isCleanTag has a different meaning
+        String branchName = gitDetails.branchName
+        branchName = branchName.replaceAll("[^a-zA-Z0-9-]+", "-") // sanitize branch names for semver
+        identifiedVersion = gitDetails.lastTag
+        if (gitDetails.commitDistance > 0) {
+            identifiedVersion += "-${branchName}.${gitDetails.commitDistance}+${gitDetails.gitHash}"
+            if (isDirty) {
+                identifiedVersion += "-dirty"
+            }
+        } else if (isDirty) {
+            identifiedVersion += "-${branchName}+${gitDetails.gitHash}-dirty"
+        }
+    } else {
+        identifiedVersion = versionOverride
+    }
 }
 catch (Exception ignored) {
     out.style(Style.Failure).text(
