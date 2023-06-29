@@ -629,6 +629,24 @@ configurations.all {
     }
 }
 
+dependencies {
+    constraints {
+        def minGtnhLibVersion = "0.0.13"
+        implementation("com.github.GTNewHorizons:GTNHLib:${minGtnhLibVersion}") {
+            because("fixes duplicate mod errors in java 17 configurations using old gtnhlib")
+        }
+        runtimeOnly("com.github.GTNewHorizons:GTNHLib:${minGtnhLibVersion}") {
+            because("fixes duplicate mod errors in java 17 configurations using old gtnhlib")
+        }
+        devOnlyNonPublishable("com.github.GTNewHorizons:GTNHLib:${minGtnhLibVersion}") {
+            because("fixes duplicate mod errors in java 17 configurations using old gtnhlib")
+        }
+        runtimeOnlyNonPublishable("com.github.GTNewHorizons:GTNHLib:${minGtnhLibVersion}") {
+            because("fixes duplicate mod errors in java 17 configurations using old gtnhlib")
+        }
+    }
+}
+
 if (file('dependencies.gradle.kts').exists()) {
     apply from: 'dependencies.gradle.kts'
 } else if (file('dependencies.gradle').exists()) {
