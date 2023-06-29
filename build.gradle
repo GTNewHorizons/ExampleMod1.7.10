@@ -467,8 +467,17 @@ sourceSets {
     }
 }
 
-if (file('addon.gradle').exists()) {
+if (file('addon.gradle.kts').exists()) {
+    apply from: 'addon.gradle.kts'
+} else if (file('addon.gradle').exists()) {
     apply from: 'addon.gradle'
+}
+
+// File for local tweaks not commited to Git
+if (file('addon.local.gradle.kts').exists()) {
+    apply from: 'addon.local.gradle.kts'
+} else if (file('addon.local.gradle').exists()) {
+    apply from: 'addon.local.gradle'
 }
 
 // Allow unsafe repos but warn
@@ -481,7 +490,14 @@ repositories.configureEach { repo ->
     }
 }
 
-apply from: 'repositories.gradle'
+if (file('repositories.gradle.kts').exists()) {
+    apply from: 'repositories.gradle.kts'
+} else if (file('repositories.gradle').exists()) {
+    apply from: 'repositories.gradle'
+} else {
+    logger.error("Neither repositories.gradle.kts nor repositories.gradle was found, make sure you extracted the full ExampleMod template.")
+    throw new RuntimeException("Missing repositories.gradle[.kts]")
+}
 
 configurations {
     runtimeClasspath.extendsFrom(runtimeOnlyNonPublishable)
@@ -613,7 +629,14 @@ configurations.all {
     }
 }
 
-apply from: 'dependencies.gradle'
+if (file('dependencies.gradle.kts').exists()) {
+    apply from: 'dependencies.gradle.kts'
+} else if (file('dependencies.gradle').exists()) {
+    apply from: 'dependencies.gradle'
+} else {
+    logger.error("Neither dependencies.gradle.kts nor dependencies.gradle was found, make sure you extracted the full ExampleMod template.")
+    throw new RuntimeException("Missing dependencies.gradle[.kts]")
+}
 
 def mixingConfigRefMap = 'mixins.' + modId + '.refmap.json'
 def mixinTmpDir = buildDir.path + File.separator + 'tmp' + File.separator + 'mixins'
@@ -1521,4 +1544,18 @@ def getSecondaryArtifacts() {
     if (!noPublishedSources) secondaryArtifacts += [sourcesJar]
     if (apiPackage) secondaryArtifacts += [apiJar]
     return secondaryArtifacts
+}
+
+// For easier scripting of things that require variables defined earlier in the buildscript
+if (file('addon.late.gradle.kts').exists()) {
+    apply from: 'addon.late.gradle.kts'
+} else if (file('addon.late.gradle').exists()) {
+    apply from: 'addon.late.gradle'
+}
+
+// File for local tweaks not commited to Git
+if (file('addon.late.local.gradle.kts').exists()) {
+    apply from: 'addon.late.local.gradle.kts'
+} else if (file('addon.late.local.gradle').exists()) {
+    apply from: 'addon.late.local.gradle'
 }
