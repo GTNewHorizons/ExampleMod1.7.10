@@ -1172,7 +1172,7 @@ publishing {
         if (usesMavenPublishing.toBoolean()) {
             maven {
                 url = mavenPublishUrl
-                allowInsecureProtocol = true // Mostly for the GTNH maven
+                allowInsecureProtocol = mavenPublishUrl.startsWith("http://") // Mostly for the GTNH maven
                 credentials {
                     username = System.getenv("MAVEN_USER") ?: "NONE"
                     password = System.getenv("MAVEN_PASSWORD") ?: "NONE"
