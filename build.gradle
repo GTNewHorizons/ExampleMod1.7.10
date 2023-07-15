@@ -363,7 +363,7 @@ try {
     if (versionOverride == null) {
         def gitDetails = versionDetails()
         def isDirty = gitVersion().endsWith(".dirty") // No public API for this, isCleanTag has a different meaning
-        String branchName = gitDetails.branchName ?: 'git'
+        String branchName = gitDetails.branchName ?: (System.getenv('GIT_LOCAL_BRANCH') ?: 'git')
         branchName = branchName.replaceAll("[^a-zA-Z0-9-]+", "-") // sanitize branch names for semver
         identifiedVersion = gitDetails.lastTag ?: '${gitDetails.gitHash}'
         if (gitDetails.commitDistance > 0) {
