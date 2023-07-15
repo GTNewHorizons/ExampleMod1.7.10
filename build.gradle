@@ -365,7 +365,7 @@ try {
         def isDirty = gitVersion().endsWith(".dirty") // No public API for this, isCleanTag has a different meaning
         String branchName = gitDetails.branchName ?: 'unknown-branch'
         branchName = branchName.replaceAll("[^a-zA-Z0-9-]+", "-") // sanitize branch names for semver
-        identifiedVersion = gitDetails.lastTag
+        identifiedVersion = gitDetails.lastTag ?: 'no-tag'
         if (gitDetails.commitDistance > 0) {
             identifiedVersion += "-${branchName}.${gitDetails.commitDistance}+${gitDetails.gitHash}"
             if (isDirty) {
