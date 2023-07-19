@@ -30,7 +30,7 @@ jobs:
                 \
                 -x "*.git/*" \
                 \
-                -x ".github/scripts/update-version" \
+                -x ".github/scripts/update_version" \
                 -x ".github/workflows/buildscript-maintenance.yml" \
                 -x ".github/workflows/release-packages.yml" \
                 \
@@ -51,7 +51,7 @@ jobs:
                 \
                 -x "*.git/*" \
                 \
-                -x ".github/scripts/update-version" \
+                -x ".github/scripts/update_version" \
                 -x ".github/workflows/buildscript-maintenance.yml" \
                 -x ".github/workflows/release-packages.yml" \
                 \
