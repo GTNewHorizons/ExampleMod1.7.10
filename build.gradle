@@ -778,7 +778,7 @@ dependencies {
         java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.19')
     }
 
-    java17PatchDependencies('net.minecraft:launchwrapper:1.15') {transitive = false}
+    java17PatchDependencies('net.minecraft:launchwrapper:1.17.1') {transitive = false}
     java17PatchDependencies("org.ow2.asm:asm:${asmVersion}")
     java17PatchDependencies("org.ow2.asm:asm-commons:${asmVersion}")
     java17PatchDependencies("org.ow2.asm:asm-tree:${asmVersion}")
