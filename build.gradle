@@ -779,10 +779,10 @@ dependencies {
         java17Dependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}")
     }
     if (modId != 'hodgepodge') {
-        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.19')
+        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.26')
     }
 
-    java17PatchDependencies('net.minecraft:launchwrapper:1.17.1') {transitive = false}
+    java17PatchDependencies('net.minecraft:launchwrapper:1.17.2') {transitive = false}
     java17PatchDependencies("org.ow2.asm:asm:${asmVersion}")
     java17PatchDependencies("org.ow2.asm:asm-commons:${asmVersion}")
     java17PatchDependencies("org.ow2.asm:asm-tree:${asmVersion}")
