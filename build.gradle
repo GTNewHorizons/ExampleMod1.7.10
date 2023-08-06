@@ -1152,10 +1152,9 @@ tasks.named("processIdeaSettings").configure {
 
 tasks.named("ideVirtualMainClasses").configure {
     // Make IntelliJ "Build project" build the mod jars
-    if (disableSpotless) {
-        dependsOn("jar", "reobfJar")
-    } else {
-        dependsOn("jar", "reobfJar", "spotlessCheck")
+    dependsOn("jar", "reobfJar")
+    if (!disableSpotless) {
+        dependsOn("spotlessCheck")
     }
 }
 
