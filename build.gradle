@@ -601,6 +601,9 @@ repositories {
         maven {
             name = "ic2"
             url = getURL("https://maven.ic2.player.to/", "https://maven2.ic2.player.to/")
+            filter {
+                includeGroup "net.industrial-craft"
+            }
             metadataSources {
                 mavenPom()
                 artifact()
