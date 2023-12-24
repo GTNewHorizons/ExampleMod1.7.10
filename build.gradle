@@ -959,21 +959,12 @@ if (usesShadowedDependencies.toBoolean()) {
     configurations.apiElements.outgoing.artifacts.clear()
     configurations.runtimeElements.outgoing.artifact(tasks.named("shadowJar", ShadowJar))
     configurations.apiElements.outgoing.artifact(tasks.named("shadowJar", ShadowJar))
-    tasks.named("jar", Jar) {
-        enabled = false
-        finalizedBy(tasks.shadowJar)
-    }
     tasks.named("reobfJar", ReobfuscatedJar) {
         inputJar.set(tasks.named("shadowJar", ShadowJar).flatMap({it.archiveFile}))
     }
     AdhocComponentWithVariants javaComponent = (AdhocComponentWithVariants) project.components.findByName("java")
     javaComponent.withVariantsFromConfiguration(configurations.shadowRuntimeElements) {
         skip()
-    }
-    for (runTask in ["runClient", "runServer", "runClient17", "runServer17"]) {
-        tasks.named(runTask).configure {
-            dependsOn("shadowJar")
-        }
     }
 }
 ext.publishableDevJar = usesShadowedDependencies.toBoolean() ? tasks.shadowJar : tasks.jar
