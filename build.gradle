@@ -1,4 +1,4 @@
-//version: 1702141377
+//version: 1704134016
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -31,8 +31,7 @@ buildscript {
         maven {
             // GTNH RetroFuturaGradle and ASM Fork
             name "GTNH Maven"
-            url "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
-            allowInsecureProtocol = true
+            url "https://nexus.gtnewhorizons.com/repository/public/"
         }
         mavenLocal()
     }
@@ -49,7 +48,7 @@ plugins {
     id 'org.ajoberstar.grgit' version '4.1.1' // 4.1.1 is the last jvm8 supporting version, unused, available for addon.gradle
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
     id 'com.palantir.git-version' version '3.0.0' apply false
-    id 'de.undercouch.download' version '5.4.0'
+    id 'de.undercouch.download' version '5.5.0'
     id 'com.github.gmazzo.buildconfig' version '3.1.0' apply false // Unused, available for addon.gradle
     id 'com.diffplug.spotless' version '6.13.0' apply false // 6.13.0 is the last jvm8 supporting version
     id 'com.modrinth.minotaur' version '2.+' apply false
@@ -118,7 +117,7 @@ propertyDefaultIfUnset("forceEnableMixins", false)
 propertyDefaultIfUnset("channel", "stable")
 propertyDefaultIfUnset("mappingsVersion", "12")
 propertyDefaultIfUnset("usesMavenPublishing", true)
-propertyDefaultIfUnset("mavenPublishUrl", "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases")
+propertyDefaultIfUnset("mavenPublishUrl", "https://nexus.gtnewhorizons.com/repository/releases/")
 propertyDefaultIfUnset("modrinthProjectId", "")
 propertyDefaultIfUnset("modrinthRelations", "")
 propertyDefaultIfUnset("curseForgeProjectId", "")
@@ -573,13 +572,15 @@ afterEvaluate {
 
 repositories {
     maven {
-        name 'Overmind forge repo mirror'
-        url 'https://gregtech.overminddl1.com/'
+        name = "GTNH Maven"
+        url = "https://nexus.gtnewhorizons.com/repository/public/"
+        // Links for convenience:
+        // Simple HTML browsing: https://nexus.gtnewhorizons.com/service/rest/repository/browse/releases/
+        // Rich web UI browsing: https://nexus.gtnewhorizons.com/#browse/browse:releases
     }
     maven {
-        name = "GTNH Maven"
-        url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
-        allowInsecureProtocol = true
+        name 'Overmind forge repo mirror'
+        url 'https://gregtech.overminddl1.com/'
     }
     maven {
         name 'sonatype'
@@ -1172,7 +1173,7 @@ publishing {
         if (usesMavenPublishing.toBoolean() && System.getenv("MAVEN_USER") != null) {
             maven {
                 url = mavenPublishUrl
-                allowInsecureProtocol = mavenPublishUrl.startsWith("http://") // Mostly for the GTNH maven
+                allowInsecureProtocol = mavenPublishUrl.startsWith("http://")
                 credentials {
                     username = System.getenv("MAVEN_USER") ?: "NONE"
                     password = System.getenv("MAVEN_PASSWORD") ?: "NONE"
