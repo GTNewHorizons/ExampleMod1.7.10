@@ -959,6 +959,9 @@ if (usesShadowedDependencies.toBoolean()) {
     configurations.apiElements.outgoing.artifacts.clear()
     configurations.runtimeElements.outgoing.artifact(tasks.named("shadowJar", ShadowJar))
     configurations.apiElements.outgoing.artifact(tasks.named("shadowJar", ShadowJar))
+    tasks.named("jar", Jar) {
+        archiveClassifier.set('dev-preshadow')
+    }
     tasks.named("reobfJar", ReobfuscatedJar) {
         inputJar.set(tasks.named("shadowJar", ShadowJar).flatMap({it.archiveFile}))
     }
