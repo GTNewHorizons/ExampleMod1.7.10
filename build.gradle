@@ -430,16 +430,16 @@ minecraft {
         }
     }
     if (gradleTokenModId) {
-        injectedTags.put gradleTokenModId, modId
+        out.style(Style.Failure).text('gradleTokenModId is deprecated! The field will no longer be generated.').println()
     }
     if (gradleTokenModName) {
-        injectedTags.put gradleTokenModName, modName
+        out.style(Style.Failure).text('gradleTokenModName is deprecated! The field will no longer be generated.').println()
     }
     if (gradleTokenVersion) {
         injectedTags.put gradleTokenVersion, modVersion
     }
     if (gradleTokenGroupName) {
-        injectedTags.put gradleTokenGroupName, modGroup
+        out.style(Style.Failure).text('gradleTokenGroupName is deprecated! The field will no longer be generated.').println()
     }
     if (enableGenericInjection.toBoolean()) {
         injectMissingGenerics.set(true)
