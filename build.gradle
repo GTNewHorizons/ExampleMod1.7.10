@@ -439,7 +439,7 @@ minecraft {
     }
     if (gradleTokenModName) {
         if (replaceGradleTokenInFile) {
-            injectedTags.put gradleTokenModId, modName
+            injectedTags.put gradleTokenModName, modName
         } else {
             out.style(Style.Failure).text('gradleTokenModName is deprecated! The field will no longer be generated.').println()
         }
@@ -449,7 +449,7 @@ minecraft {
     }
     if (gradleTokenGroupName) {
         if (replaceGradleTokenInFile) {
-            injectedTags.put gradleTokenModId, modGroup
+            injectedTags.put gradleTokenGroupName, modGroup
         } else {
             out.style(Style.Failure).text('gradleTokenGroupName is deprecated! The field will no longer be generated.').println()
         }
