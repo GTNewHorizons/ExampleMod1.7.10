@@ -428,18 +428,31 @@ minecraft {
         for (f in replaceGradleTokenInFile.split(',')) {
             tagReplacementFiles.add f
         }
+		out.style(Style.Info).text('replaceGradleTokenInFile is deprecated! Consider using generateGradleTokenClass.').println()
     }
     if (gradleTokenModId) {
-        out.style(Style.Failure).text('gradleTokenModId is deprecated! The field will no longer be generated.').println()
+        if (replaceGradleTokenInFile) {
+            injectedTags.put gradleTokenModId, modId
+        } else {
+            out.style(Style.Failure).text('gradleTokenModId is deprecated! The field will no longer be generated.').println()
+        }
     }
     if (gradleTokenModName) {
-        out.style(Style.Failure).text('gradleTokenModName is deprecated! The field will no longer be generated.').println()
+        if (replaceGradleTokenInFile) {
+            injectedTags.put gradleTokenModId, modName
+        } else {
+            out.style(Style.Failure).text('gradleTokenModName is deprecated! The field will no longer be generated.').println()
+        }
     }
     if (gradleTokenVersion) {
         injectedTags.put gradleTokenVersion, modVersion
     }
     if (gradleTokenGroupName) {
-        out.style(Style.Failure).text('gradleTokenGroupName is deprecated! The field will no longer be generated.').println()
+        if (replaceGradleTokenInFile) {
+            injectedTags.put gradleTokenModId, modGroup
+        } else {
+            out.style(Style.Failure).text('gradleTokenGroupName is deprecated! The field will no longer be generated.').println()
+        }
     }
     if (enableGenericInjection.toBoolean()) {
         injectMissingGenerics.set(true)
