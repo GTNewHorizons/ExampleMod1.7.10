@@ -651,7 +651,7 @@ repositories {
 
 def mixinProviderGroup = "io.github.legacymoddingmc"
 def mixinProviderModule = "unimixins"
-def mixinProviderVersion = "0.1.13"
+def mixinProviderVersion = "0.1.15"
 def mixinProviderSpecNoClassifer = "${mixinProviderGroup}:${mixinProviderModule}:${mixinProviderVersion}"
 def mixinProviderSpec = "${mixinProviderSpecNoClassifer}:dev"
 ext.mixinProviderSpec = mixinProviderSpec
