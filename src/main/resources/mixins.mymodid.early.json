@@ -1,0 +1,8 @@
+{
+  "required": true,
+  "minVersion": "0.8.5-GTNH",
+  "package": "com.myname.mymodid.mixins.early",
+  "refmap": "mixins.mymodid.refmap.json",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8"
+}
