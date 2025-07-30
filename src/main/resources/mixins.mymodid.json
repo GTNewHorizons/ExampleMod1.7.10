@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.8.5-GTNH",
+  "package": "com.myname.mymodid.mixins",
+  "refmap": "mixins.mymodid.refmap.json",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [],
+  "client": ["MixinMinecraft_Example"],
+  "server": []
+}
