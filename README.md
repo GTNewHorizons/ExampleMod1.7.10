@@ -68,8 +68,8 @@ To see examples you can find lots of mixins in the mods : [Hodgepodge](https://g
 
 To add Mixins to your project follow one of the example commits :
 - use [normal mixins](https://github.com/GTNewHorizons/ExampleMod1.7.10/commit/beba55615fa8337b7639f0d5b18db6cc8d4826be) for basic and quick registration
-- use [GTNH Early/Late mixins](https://github.com/GTNewHorizons/ExampleMod1.7.10/commit/9061956585331720af18702d7fac596ebb07d4b4) system to have full control over the registration logic and check for presence of other mods during runtime to load your mixins
-- use [GTNH IMixins](https://github.com/GTNewHorizons/ExampleMod1.7.10/commit/e9b3556df575345b9aa146ce620f44f718d335d1) (recommended) system for the same thing as the above but in a less verbose and more unified manner using the IMixins api
+- use [GTNH Early/Late mixins](https://github.com/GTNewHorizons/ExampleMod1.7.10/commit/c4df59d92164775b69451f3e690239e93d1fc979) system to have full control over the registration logic and check for presence of other mods during runtime to load your mixins
+- use [GTNH IMixins](https://github.com/GTNewHorizons/ExampleMod1.7.10/commit/055cd4f18765a421a86c706f53b62116988297e3) (recommended) system for the same thing as the above but in a less verbose and more unified manner using the IMixins api
 
 When enabling mixins in your project the dependencies are handled automatically.
 
