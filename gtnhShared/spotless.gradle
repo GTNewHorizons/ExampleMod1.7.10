@@ -20,21 +20,21 @@ spotless {
         toggleOffOn()
         importOrderFile(Blowdryer.file('spotless.importorder'))
         removeUnusedImports()
-        eclipse('4.19.0').configFile(Blowdryer.file('spotless.eclipseformat.xml'))
+        eclipse('4.19').configFile(Blowdryer.file('spotless.eclipseformat.xml'))
     }
     kotlin {
-        target 'src/*/kotlin/**/*.kt'
+        target 'src/*/kotlin/**/*.kt', 'src/*/java/**/*.kt'
 
         toggleOffOn()
-        ktfmt('0.39')
-
         trimTrailingWhitespace()
-        indentWithSpaces(4)
         endWithNewline()
+        ktlint('1.7.1').editorConfigOverride([
+            'ktlint_code_style': 'intellij_idea'
+        ])
     }
     scala {
         target 'src/*/scala/**/*.scala'
 
-        scalafmt('3.7.1')
+        scalafmt('3.7.15')
     }
 }
