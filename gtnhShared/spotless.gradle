@@ -37,4 +37,23 @@ spotless {
 
         scalafmt('3.7.15')
     }
+    json {
+        ratchetFrom 'origin/master' // only format files which have changed since origin/master
+
+        target(
+            'src/**/mcmod.info',
+            'src/**/*.json',
+            'src/**/*.mcmeta'
+        )
+
+        prettier().config([
+            parser: 'json',
+            printWidth: 100,
+            tabWidth: 2,
+            objectWrap: "collapse",
+            useTabs: false,
+            endOfLine: 'lf'
+        ])
+        endWithNewline()
+    }
 }
