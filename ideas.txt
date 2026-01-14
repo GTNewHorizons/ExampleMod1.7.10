@@ -1,0 +1,43 @@
+Auto fishing rod
+Cryo-Furnace
+lightening rod charger
+Random item generator
+rf spawner
+weather controller
+daylight controller
+time anchor
+teleportation pad
+wireless rf charger
+trash void
+recycler
+strongbox
+fluid trash can
+iron drill
+diamond drill
+steel drill
+bedrock drill
+shock boots
+speed leggings
+night vision helmet
+flamethrower
+railgun
+jump boots
+wind mill
+blood generator
+pricker
+pricker block
+golem press
+tape measure
+golden bread
+computercraft rf modem
+open blocks glider upgrade
+experience solidifier
+dolly
+sickle
+teleportation wand
+market block
+shipping bin
+ladder (aluminum)
+ladder (steel)
+ladder (iron)
+caution block (black/yellow)

@@ -1,4 +1,4 @@
-package com.myname.mymodid;
+package com.rhghunter.rhgmodpackextra;
 
 import java.io.File;
 
