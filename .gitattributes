@@ -1,7 +1,13 @@
-* text eol=lf
+# All files are text with LF line endings and UTF-8 encoding by default
+* text eol=lf  encoding=utf-8
 
-*.[jJ][aA][rR]          binary
+# .bat, .cmd, .ps1, and .csv use CRLF line endings
+*.[bB][aA][tT]          text eol=crlf encoding=utf-8
+*.[cC][mM][dD]          text eol=crlf encoding=utf-8
+*.[cC][sS][vV]          text eol=crlf encoding=utf-8
+*.[pP][sS]1             text eol=crlf encoding=utf-8
 
+# Image formats are binary
 *.[pP][nN][gG]          binary
 *.[jJ][pP][gG]          binary
 *.[jJ][pP][eE][gG]      binary
@@ -9,10 +15,11 @@
 *.[tT][iI][fF]          binary
 *.[tT][iI][fF][fF]      binary
 *.[iI][cC][oO]          binary
-*.[sS][vV][gG]          text
 *.[eE][pP][sS]          binary
 *.[xX][cC][fF]          binary
+*.[pP][sS][dD]          binary
 
+# Audio files are binary
 *.[kK][aA][rR]          binary
 *.[mM]4[aA]             binary
 *.[mM][iI][dD]          binary
@@ -21,24 +28,26 @@
 *.[oO][gG][gG]          binary
 *.[rR][aA]              binary
 
+# Archive files are binary
 *.7[zZ]                 binary
 *.[gG][zZ]              binary
 *.[tT][aA][rR]          binary
 *.[tT][gG][zZ]          binary
 *.[zZ][iI][pP]          binary
 
-*.[tT][cC][nN]          binary
-*.[sS][oO]              binary
-*.[dD][lL][lL]          binary
-*.[dD][yY][lL][iI][bB]  binary
-*.[pP][sS][dD]          binary
+# Font files are binary
 *.[tT][tT][fF]          binary
 *.[oO][tT][fF]          binary
+*.[eE][oO][tT]          binary
+*.[wW][oO][fF][fF]      binary
+*.[wW][oO][fF][fF]2     binary
 
-*.[pP][aA][tT][cC][hH]  -text
+# Model formats are binary
+*.[tT][cC][nN]          binary
 
-*.[bB][aA][tT]          text eol=crlf
-*.[cC][mM][dD]          text eol=crlf
-*.[pP][sS]1             text eol=crlf
-
-*[aA][uU][tT][oO][gG][eE][nN][eE][rR][aA][tT][eE][dD]* binary
+# Library files are binary
+*.[sS][oO]              binary
+*.[dD][lL][lL]          binary
+*.[pP][dD][bB]          binary
+*.[dD][yY][lL][iI][bB]  binary
+*.[jJ][aA][rR]          binary
