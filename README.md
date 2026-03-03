@@ -102,5 +102,5 @@ For local tweaks that you don't want to commit to Git, like adding extra JVM arg
 
 If you tried out this build script we would love to head your opinion! Is there any feature missing for you? Did something not work? Please open an issue and we will try to resolve it asap!
 
-Happy modding, \
+Happy modding,\
 [SinTh0r4s](https://github.com/SinTh0r4s), [TheElan](https://github.com/TheElan) and [basdxz](https://github.com/basdxz)
