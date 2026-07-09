@@ -5,6 +5,21 @@
 
 An example mod for Minecraft 1.7.10 with Forge focussed on a stable, updatable setup.
 
+<!-- omit in toc -->
+### Table of Contents
+
+* [Example Forge Mod for Minecraft 1.7.10](#example-forge-mod-for-minecraft-1710)
+    * [Motivation](#motivation)
+    * [Help! I'm stuck!](#help-im-stuck)
+    * [Getting started](#getting-started)
+    * [Features](#features)
+    * [Files](#files)
+    * [Forge's Access Transformers](#forges-access-transformers)
+    * [Mixins](#mixins)
+    * [Advanced](#advanced)
+    * [Feedback wanted](#feedback-wanted)
+
+
 ### Motivation
 
 We had our fair share in struggles with build scripts for Minecraft Forge. There are quite a few pitfalls from non-obvious error messages. This Example Project provides you a build system you can adapt to over 90% of Minecraft Forge mods and can easily be updated if need be.
@@ -20,7 +35,8 @@ Creating mod from scratch:
 2. Replace placeholders in LICENSE-template and rename it to LICENSE, or remove LICENSE-template and put any other license you like on your code. This is an permissive OSS project and we encourage you participate in OSS movement by having permissive license like one in template. You can find out pros and cons of OSS software in [this article](https://www.freecodecamp.org/news/what-is-great-about-developing-open-source-and-what-is-not/)
 3. Ensure your project is under VCS. For example initialise git repository by running `git init; git commit --message "initialized repository"`.
 4. Replace placeholders (edit values in gradle.properties, change example package and class names, etc.)
-5. Run `./gradlew build`
+5. Run `./gradlew setupDecompWorkspace`
+6. Run `./gradlew build`
 6. Make sure to check out the rest sections of this file.
 7. You are good to go!
 
@@ -48,6 +64,7 @@ We also have described guidelines for existing mod [migration](docs/migration.md
  - [`gradle.properties`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/gradle.properties): The core configuration file. It includes
  - [`dependencies.gradle[.kts]`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/dependencies.gradle): Add your mod's dependencies in this file. This is separate from the main build script, so you may replace the [`build.gradle`](https://github.com/SinTh0r4s/ExampleMod1.7.10/blob/main/build.gradle) if an update is available.
  - [`repositories.gradle[.kts]`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/repositories.gradle): Add your dependencies' repositories. This is separate from the main build script, so you may replace the [`build.gradle`](https://github.com/SinTh0r4s/ExampleMod1.7.10/blob/main/build.gradle) if an update is available.
+ - `addon.gradle[.kts]`: Any additional build logic. This is separate from the main build script, so you may replace the [`build.gradle`](https://github.com/SinTh0r4s/ExampleMod1.7.10/blob/main/build.gradle) if an update is available. See [Advanced](#advanced) for more details.
  - [`jitpack.yml`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/jitpack.yml): Ensures that your mod is available as import over [Jitpack](https://jitpack.io).
  - [`.github/workflows/gradle.yml`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/.github/workflows/gradle.yml): A simple CI script that will build your mod any time it is pushed to `master` or `main` and publish the result as release in your repository. This feature is free with GitHub if your repository is public.
 
@@ -57,7 +74,8 @@ You may activate Forge's Access Transformers by defining a configuration file in
 
 Check out the [`example-access-transformers`](https://github.com/GTNewHorizons/ExampleMod1.7.10/tree/example-access-transformers) branch for a working example!
 
-__Warning:__ Access Transformers are bugged and will deny you any sources for the decompiled minecraft! Your development environment will still work, but you might face some inconveniences. For example, IntelliJ will not permit searches in dependencies without attached sources.
+> [!WARNING]
+> Access Transformers are bugged and will deny you any sources for the decompiled Minecraft! Your development environment will still work, but you might face some inconveniences. For example, IntelliJ will not permit searches in dependencies without attached sources.
 
 ### Mixins
 
@@ -84,5 +102,5 @@ For local tweaks that you don't want to commit to Git, like adding extra JVM arg
 
 If you tried out this build script we would love to head your opinion! Is there any feature missing for you? Did something not work? Please open an issue and we will try to resolve it asap!
 
-Happy modding, \
+Happy modding,\
 [SinTh0r4s](https://github.com/SinTh0r4s), [TheElan](https://github.com/TheElan) and [basdxz](https://github.com/basdxz)
