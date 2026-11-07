@@ -80,17 +80,15 @@ out/
 *.ksh
 
 ## Windows ##
+*.bat
+*.cmd
 *.ps1
 *.psm1
 *.psd1
 
 # Scripts #
 ## Gradle ##
-### Batch Files ###
-*.bat
 !gradlew.bat
-
-### Shellscripts ###
 !gradlew
 
 ### Local Build Script Addons ###
