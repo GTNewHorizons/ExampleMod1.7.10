@@ -1,37 +1,104 @@
-.gradle
-.settings
-/.idea/
-/.vscode/
-/run/
-/build/
-/eclipse/
-.classpath
+# Editors #
+## Visual Studio Code ##
+### Workspace Folder ###
+.vscode/*
+
+### Local History ###
+.history/
+
+## Eclipse ##
 .project
-/bin/
-/config/
-/crash-reports/
-/logs/
-options.txt
-/saves/
-usernamecache.json
-banned-ips.json
-banned-players.json
-eula.txt
-ops.json
-server.properties
-servers.dat
-usercache.json
-whitelist.json
-/out/
-*.iml
-*.ipr
-*.iws
-*.bat
-*.DS_Store
-!gradlew.bat
+.classpath
+.settings/
+
+## Vim ##
+### Swap ###
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]*.s[a-rt-v][a-z]
+[._]*.ss[a-gi-z]
+[._]sw[a-p]
+
+### Session ###
+Session.vim
+Sessionx.vim
+
+### Temporary Files ###
+.netrwhist
+*~
+
+### Auto-generated Tag Files ###
+tags
+
+### Undo Persistence ###
+[._]*.un~
+
+## Eclipse ##
+### Core ###
+.classpath
 .factorypath
+.project
+.settings/
+
+## IDEA ##
+### Core ###
+.idea/
+
+# Logs #
+*.log*
+
+# Environment #
+## General ##
+*.env*
+
+## JEnv ##
+.java-version
+
+## Gradle ##
+user.properties
+
+# Artifacts #
+## Gradle ##
+bin/
+build/
+.gradle/
+
+# Debugging #
+## Gradle ##
+run/
+bin/
+out/
+
+# OS-Specific #
+## macOS ##
+*.DS_Store
+
+## Linux ##
+*.sh
+*.zsh
+*.fish
+*.ksh
+
+## Windows ##
+*.bat
+*.cmd
+*.ps1
+*.psm1
+*.psd1
+
+# Scripts #
+## Gradle ##
+!gradlew.bat
+!gradlew
+
+### Local Build Script Addons ###
 addon.local.gradle
 addon.local.gradle.kts
 addon.late.local.gradle
 addon.late.local.gradle.kts
+
+# Misc. #
+*.iml
+*.ipr
+*.iws
 layout.json
