@@ -12,12 +12,12 @@ Try to get rid of dependencies on concrete jars (usually in the `lib` folder) if
 
 Check if they are in maven repository (usually authors put such information in the project readme), if it isn't accessible but project is open source with permissive enough license (e.g., MIT) - you still can publish them yourselves:
    1. Fork the repository
-   2. Drop `jitpack.yml` and `.github/workflows/gradle.yml` in project root. You can find this file in this repository root.
+   2. Drop `jitpack.yml` and `.github/workflows/build-and-test.yml` in project root. You can find this file in this repository root.
    3. Make sure everything builds from console by running `./gradlew clean setupCIWorkspace`
    4. If all is fine/after fixing the errors - make a tag on Github or using console, this should trigger Github build hook and generate a release
-   4. Lookup forked repository on `https://jitpack.io/`
-   5. Find your release and click "Get it", which should scroll you down to the example of how to add the dependency (make sure you have jitpack repository in mod you are porting)
-   6. Checkout build log beside button you clicked to make sure it succeeds
+   5. Lookup forked repository on `https://jitpack.io/`
+   6. Find your release and click "Get it", which should scroll you down to the example of how to add the dependency (make sure you have jitpack repository in mod you are porting)
+   7. Checkout build log beside button you clicked to make sure it succeeds
 
 Now when you are sure dependency is available in maven repository - just add it as a normal gradle dependency in `dependencies.gradle`.
 
@@ -47,7 +47,7 @@ Good approach is to start working with smaller things first, building up your co
    5. Start fixing small things, ones that you think you have most chances to fix and work your way up
    6. If any there is any feature that is not worth it's time or you simply don't know how to do it - consider dropping it entirely and open an issue in your repository where you'll explain your findings and blockers.
        Maybe somebody with greater knowledge/more time/motivation will try to take bite at it.
-9. Fix bugs you've introduced when porting.
+   7. Fix bugs you've introduced when porting.
     It is uncommon for mods to have lots of workarounds and hidden connections.
     You'll need to test things and check if they work as intended (gl;hf ;p)
 
